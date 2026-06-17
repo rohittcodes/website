@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
       to: person.email,
       replyTo: email,
@@ -23,8 +23,14 @@ export async function POST(req: Request) {
       text: `From: ${name} (${email})\n\n${message}`,
     });
 
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: "Failed to send message. Please try again." }, { status: 500 });
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
+    console.error("Contact form error:", err);
     return NextResponse.json({ error: "Failed to send message. Please try again." }, { status: 500 });
   }
 }

@@ -10,14 +10,20 @@ export async function POST(req: Request) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.contacts.create({
+    const { error } = await resend.contacts.create({
       email,
       audienceId: process.env.RESEND_AUDIENCE_ID!,
       unsubscribed: false,
     });
 
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: "Failed to subscribe. Please try again." }, { status: 500 });
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
+    console.error("Subscribe error:", err);
     return NextResponse.json({ error: "Failed to subscribe. Please try again." }, { status: 500 });
   }
 }

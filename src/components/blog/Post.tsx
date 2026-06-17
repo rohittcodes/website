@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, Column, Media, Row, Avatar, Text } from "@once-ui-system/core";
+import { Card, Column, Media, Row, Text } from "@once-ui-system/core";
 import { formatDate } from "@/utils/formatDate";
-import { person } from "@/resources";
+import { readingTime } from "@/utils/readingTime";
 
 interface PostProps {
   post: any;
@@ -11,9 +11,13 @@ interface PostProps {
 }
 
 export default function Post({ post, thumbnail, direction }: PostProps) {
+  const image =
+    post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`;
+
   return (
     <Card
       fillWidth
+      fillHeight
       key={post.slug}
       href={`/blog/${post.slug}`}
       transition="micro-medium"
@@ -25,35 +29,52 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
       gap={direction === "column" ? undefined : "24"}
       s={{ direction: "column" }}
     >
-      {post.metadata.image && thumbnail && (
+      {thumbnail && (
         <Media
           priority
           sizes="(max-width: 768px) 100vw, 640px"
           border="neutral-alpha-weak"
           cursor="interactive"
           radius="l"
-          src={post.metadata.image}
+          src={image}
           alt={"Thumbnail of " + post.metadata.title}
           aspectRatio="16 / 9"
+          style={{ flexShrink: 0 }}
         />
       )}
-      <Row fillWidth>
-        <Column maxWidth={28} paddingY="24" paddingX="l" gap="20" vertical="center">
-          <Row gap="24" vertical="center">
-            <Row vertical="center" gap="16">
-              <Avatar src={person.avatar} size="s" />
-              <Text variant="label-default-s">{person.name}</Text>
-            </Row>
+      <Row fillWidth fillHeight style={{ minHeight: 0 }}>
+        <Column fillWidth fillHeight paddingY="12" gap="8" vertical="start" horizontal="start" style={{ minHeight: 0 }}>
+          <Row gap="12" vertical="center">
             <Text variant="body-default-xs" onBackground="neutral-weak">
               {formatDate(post.metadata.publishedAt, false)}
             </Text>
+            <Text variant="body-default-xs" onBackground="neutral-weak">
+              {readingTime(post.content)} min read
+            </Text>
           </Row>
-          <Text variant="heading-strong-l" wrap="balance">
+          {post.metadata.tag && (
+            <Row>
+              <Text variant="label-strong-s" onBackground="neutral-weak">
+                {post.metadata.tag}
+              </Text>
+            </Row>
+          )}
+          <Text variant="heading-strong-m" wrap="balance">
             {post.metadata.title}
           </Text>
-          {post.metadata.tag && (
-            <Text variant="label-strong-s" onBackground="neutral-weak">
-              {post.metadata.tag}
+          {post.metadata.summary && (
+            <Text
+              variant="body-default-s"
+              onBackground="neutral-weak"
+              wrap="balance"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {post.metadata.summary}
             </Text>
           )}
         </Column>

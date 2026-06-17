@@ -8,16 +8,17 @@ import {
   Badge,
   Row,
   Schema,
-  Meta,
   Line,
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, routes } from "@/resources";
-import { Mailchimp } from "@/components";
+import { ContactForm, GitHubRepos } from "@/components";
 import { Projects } from "@/components/work/Projects";
+import { FeaturedWork } from "@/components/work/FeaturedWork";
 import { Posts } from "@/components/blog/Posts";
+import { generateSeoMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  return generateSeoMetadata({
     title: home.title,
     description: home.description,
     baseURL: baseURL,
@@ -28,7 +29,7 @@ export async function generateMetadata() {
 
 export default function Home() {
   return (
-    <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
+    <Column maxWidth="m" gap="l" paddingY="8" horizontal="center">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -48,8 +49,8 @@ export default function Home() {
             <RevealFx
               fillWidth
               horizontal="center"
-              paddingTop="16"
-              paddingBottom="32"
+              paddingTop="12"
+              paddingBottom="16"
               paddingLeft="12"
             >
               <Badge
@@ -65,13 +66,13 @@ export default function Home() {
               </Badge>
             </RevealFx>
           )}
-          <RevealFx translateY="4" fillWidth horizontal="center" paddingBottom="16">
-            <Heading wrap="balance" variant="display-strong-l">
+          <RevealFx translateY="4" fillWidth horizontal="center" paddingBottom="8">
+            <Heading wrap="balance" variant="display-strong-m">
               {home.headline}
             </Heading>
           </RevealFx>
-          <RevealFx translateY="8" delay={0.2} fillWidth horizontal="center" paddingBottom="32">
-            <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
+          <RevealFx translateY="8" delay={0.2} fillWidth horizontal="center" paddingBottom="16">
+            <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-l">
               {home.subline}
             </Text>
           </RevealFx>
@@ -100,16 +101,24 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
-      <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
+      <RevealFx translateY="16" delay={0.6} fillWidth>
+        <Column fillWidth gap="16" paddingX="l">
+          <Row fillWidth vertical="center" gap="16">
+            <Heading as="h2" variant="display-strong-xs">
+              Selected work
+            </Heading>
+            <Line flex={1} />
+          </Row>
+          <FeaturedWork />
+        </Column>
       </RevealFx>
       {routes["/blog"] && (
-        <Column fillWidth gap="24" marginBottom="l">
-          <Row fillWidth paddingRight="64">
+        <Column fillWidth gap="16" marginBottom="m">
+          <Row fillWidth paddingRight="40">
             <Line maxWidth={48} />
           </Row>
-          <Row fillWidth gap="24" marginTop="40" s={{ direction: "column" }}>
-            <Row flex={1} paddingLeft="l" paddingTop="24">
+          <Row fillWidth gap="16" marginTop="16" s={{ direction: "column" }}>
+            <Row flex={1} paddingLeft="l" paddingTop="8">
               <Heading as="h2" variant="display-strong-xs" wrap="balance">
                 Latest from the blog
               </Heading>
@@ -118,13 +127,30 @@ export default function Home() {
               <Posts range={[1, 2]} columns="2" />
             </Row>
           </Row>
-          <Row fillWidth paddingLeft="64" horizontal="end">
+          <Row fillWidth paddingLeft="40" horizontal="end">
             <Line maxWidth={48} />
           </Row>
         </Column>
       )}
-      <Projects range={[2]} />
-      <Mailchimp />
+      <Column fillWidth gap="16" paddingX="l">
+        <Row fillWidth vertical="center" gap="16">
+          <Heading as="h2" variant="display-strong-xs">
+            Case studies
+          </Heading>
+          <Line flex={1} />
+        </Row>
+      </Column>
+      <Projects range={[1, 2]} />
+      <Column fillWidth gap="16" paddingX="l">
+        <Row fillWidth vertical="center" gap="16">
+          <Heading as="h2" variant="display-strong-xs">
+            Open source
+          </Heading>
+          <Line flex={1} />
+        </Row>
+        <GitHubRepos />
+      </Column>
+      <ContactForm marginBottom="m" />
     </Column>
   );
 }

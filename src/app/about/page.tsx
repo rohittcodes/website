@@ -8,17 +8,17 @@ import {
   Media,
   Tag,
   Text,
-  Meta,
   Schema,
   Row,
 } from "@once-ui-system/core";
 import { baseURL, about, person, social } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
+import { generateSeoMetadata } from "@/utils/seo";
 import React from "react";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  return generateSeoMetadata({
     title: about.title,
     description: about.description,
     baseURL: baseURL,
@@ -113,9 +113,8 @@ export default function About() {
           <Column
             id={about.intro.title}
             fillWidth
-            minHeight="160"
-            vertical="center"
-            marginBottom="32"
+            paddingTop="s"
+            marginBottom="20"
           >
             {about.calendar.display && (
               <Row
@@ -142,12 +141,12 @@ export default function About() {
                 />
               </Row>
             )}
-            <Heading className={styles.textAlign} variant="display-strong-xl">
+            <Heading className={styles.textAlign} variant="display-strong-l">
               {person.name}
             </Heading>
             <Text
               className={styles.textAlign}
-              variant="display-default-xs"
+              variant="heading-default-l"
               onBackground="neutral-weak"
             >
               {person.role}
@@ -197,17 +196,17 @@ export default function About() {
           </Column>
 
           {about.intro.display && (
-            <Column textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
+            <Column textVariant="body-default-m" fillWidth gap="s" marginBottom="l">
               {about.intro.description}
             </Column>
           )}
 
           {about.work.display && (
             <>
-              <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
+              <Heading as="h2" id={about.work.title} variant="display-strong-xs" marginBottom="s">
                 {about.work.title}
               </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <Column fillWidth gap="m" marginBottom="32">
                 {about.work.experiences.map((experience, index) => (
                   <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
                     <Row fillWidth horizontal="between" vertical="end" marginBottom="4">
@@ -263,10 +262,10 @@ export default function About() {
 
           {about.studies.display && (
             <>
-              <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
+              <Heading as="h2" id={about.studies.title} variant="display-strong-xs" marginBottom="s">
                 {about.studies.title}
               </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <Column fillWidth gap="m" marginBottom="32">
                 {about.studies.institutions.map((institution, index) => (
                   <Column key={`${institution.name}-${index}`} fillWidth gap="4">
                     <Text id={institution.name} variant="heading-strong-l">
@@ -286,8 +285,8 @@ export default function About() {
               <Heading
                 as="h2"
                 id={about.technical.title}
-                variant="display-strong-s"
-                marginBottom="40"
+                variant="display-strong-xs"
+                marginBottom="m"
               >
                 {about.technical.title}
               </Heading>

@@ -1,0 +1,46 @@
+---
+title: "Linea: AI Workflow Orchestration Platform"
+publishedAt: "2025-04-01"
+summary: "A visual canvas for composing AI workflows, backed by a reliable execution engine and TypeScript SDK, turning black-box agent logic into visual, manageable pipelines."
+images:
+  - "/images/projects/linea/cover-01.avif"
+team:
+  - name: "Rohith Singh"
+    role: "Full Stack + AI Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/rohittcodes"
+---
+
+## The Problem
+
+Single-turn LLM chats can't handle complex, multi-step business logic. Most enterprise "AI integrations" end up as opaque wrappers: hard to debug, impossible to modify, and completely invisible to the people who need to trust them.
+
+There was no good tool for visually designing, testing, and deploying autonomous agent systems without writing infrastructure from scratch.
+
+## What I Built
+
+Linea is a low-code/no-code environment where you architect AI workflows by connecting nodes. Each node is a discrete unit: an LLM call, a vector retrieval step, a tool invocation (Stripe, Slack, Google Search). You wire them together visually, backed by a reliable execution engine and a TypeScript SDK for embedding workflows in other products.
+
+## Technical Highlights
+
+**Node-Based Orchestration**
+Built on React Flow and TypeScript. The canvas renders in real time as you build, propagating data contracts automatically so you catch mismatches before running anything.
+
+**Agentic Memory**
+Integrated a RAG pipeline using pgvector and FastAPI. Agents maintain long-term context across multi-step tasks by retrieving relevant memory chunks at each node execution.
+
+**State Machine for Streaming**
+Wrote a custom state machine to manage streaming LLM responses mid-workflow. Tool-use execution, where the model calls an API and waits for a result, is handled as a first-class state transition, keeping the UX smooth at sub-200ms response latency.
+
+**Scalable Architecture**
+Fully containerized with Docker. Stateless execution nodes scale horizontally; the state machine layer handles concurrency without workflow logic breakdown.
+
+## Stack
+
+Next.js · NestJS · LangGraph.js · PostgreSQL · pgvector · Redis · BullMQ · Clerk
+
+## Result
+
+- Reduced time to deploy custom business agents by ~70%
+- Made agent logic auditable and editable by non-engineers
+- Eliminated the "black box" problem: every decision in the pipeline is a visible, inspectable node

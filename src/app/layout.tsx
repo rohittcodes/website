@@ -8,16 +8,17 @@ import {
   Background,
   Column,
   Flex,
-  Meta,
   opacity,
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
 import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { Analytics } from "@vercel/analytics/next";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+import { generateSeoMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  return generateSeoMetadata({
     title: home.title,
     description: home.description,
     baseURL: baseURL,
@@ -105,6 +106,7 @@ export default async function RootLayout({
       </head>
       <Providers>
         <Column
+          suppressHydrationWarning
           as="body"
           background="page"
           fillWidth
@@ -155,7 +157,7 @@ export default async function RootLayout({
               }}
             />
           </RevealFx>
-          <Flex fillWidth minHeight="16" s={{ hide: true }} />
+          <Flex fillWidth minHeight="80" s={{ hide: true }} />
           <Header />
           <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
             <Flex horizontal="center" fillWidth minHeight="0">
@@ -163,6 +165,7 @@ export default async function RootLayout({
             </Flex>
           </Flex>
           <Footer />
+          <Analytics />
         </Column>
       </Providers>
     </Flex>

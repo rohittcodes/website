@@ -1,21 +1,45 @@
 import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
+import { Fragment } from "react/jsx-runtime";
+
+function HeadlineChip({ src, alt }: { src: string; alt: string }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        verticalAlign: "middle",
+        margin: "0 0.1em",
+        height: "0.8em",
+        width: "1.3em",
+        overflow: "hidden",
+        borderRadius: "0.25em",
+        border: "2px solid var(--page-background)",
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        style={{ height: "100%", width: "100%", objectFit: "cover" }}
+      />
+    </span>
+  );
+}
 
 const person: Person = {
-  firstName: "Selene",
-  lastName: "Yu",
-  name: `Selene Yu`,
-  role: "Design Engineer",
+  firstName: "Rohith",
+  lastName: "Singh",
+  name: "Rohith Singh",
+  role: "Full Stack + AI Engineer",
   avatar: "/images/avatar.jpg",
-  email: "example@gmail.com",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
+  email: "rohittcodes@gmail.com",
+  location: "Asia/Kolkata", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+  languages: ["English", "German (Deutsch)", "Hindi", "Telugu"], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter: Newsletter = {
   display: true,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
-  description: <>My weekly newsletter about creativity and engineering</>,
+  title: <>Subscribe to my newsletter</>,
+  description: <>Thoughts on AI, backend systems, and building things that matter</>,
 };
 
 const social: Social = [
@@ -25,25 +49,19 @@ const social: Social = [
   {
     name: "GitHub",
     icon: "github",
-    link: "https://github.com/once-ui-system",
+    link: "https://github.com/rohittcodes",
     essential: true,
   },
   {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/company/once-ui/",
+    link: "https://www.linkedin.com/in/rohittcodes",
     essential: true,
   },
   {
-    name: "Instagram",
-    icon: "instagram",
-    link: "https://www.instagram.com/once_ui/",
-    essential: false,
-  },
-  {
-    name: "Threads",
-    icon: "threads",
-    link: "https://www.threads.com/@once_ui",
+    name: "X",
+    icon: "x",
+    link: "https://x.com/rohittcodes",
     essential: true,
   },
   {
@@ -56,28 +74,34 @@ const social: Social = [
 
 const home: Home = {
   path: "/",
-  image: "/images/og/home.jpg",
+  image: `/api/og/generate?title=${encodeURIComponent("Rohith Singh: Full Stack + AI Engineer")}`,
   label: "Home",
   title: `${person.name}'s Portfolio`,
-  description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
+  description: "I build full-stack and AI-native products that actually ship, not just demo well. Here's the proof.",
+  headline: (
+    <>
+      Building <HeadlineChip src="/images/projects/linea/cover-01.avif" alt="Linea" />{" "}
+      AI-native software <HeadlineChip src="/images/projects/novabench/cover-01.avif" alt="NovaBench" />{" "}
+      that ships and scales
+    </>
+  ),
   featured: {
     display: true,
     title: (
       <Row gap="12" vertical="center">
-        <strong className="ml-4">Once UI</strong>{" "}
+        <strong className="ml-4">Linea Labs</strong>{" "}
         <Line background="brand-alpha-strong" vert height="20" />
         <Text marginRight="4" onBackground="brand-medium">
-          Featured work
+          Currently building
         </Text>
       </Row>
     ),
-    href: "/work/building-once-ui-a-customizable-design-system",
+    href: "https://createxp.com",
   },
   subline: (
     <>
-    I'm Selene, a design engineer at <Text as="span" size="xl" weight="strong">ONCE UI</Text>, where I craft intuitive <br /> user experiences. After hours, I build my own projects.
-</>
+      I build full-stack and AI-native products, obsess over backend architecture, and ship side projects to learn in public.
+    </>
   ),
 };
 
@@ -85,7 +109,7 @@ const about: About = {
   path: "/about",
   label: "About",
   title: `About – ${person.name}`,
-  description: `Meet ${person.name}, ${person.role} from ${person.location}`,
+  description: `I'm ${person.name}, a ${person.role} based in ${person.location}. I build things, ship them, and figure out the rest along the way.`,
   tableOfContent: {
     display: true,
     subItems: false,
@@ -95,16 +119,17 @@ const about: About = {
   },
   calendar: {
     display: true,
-    link: "https://cal.com",
+    link: "https://cal.com/rohittcodes",
   },
   intro: {
     display: true,
     title: "Introduction",
     description: (
       <>
-        Selene is a Jakarta-based design engineer with a passion for transforming complex challenges
-        into simple, elegant design solutions. Her work spans digital interfaces, interactive
-        experiences, and the convergence of design and technology.
+        Software engineer based in Hyderabad, India. Interested in backend architecture, AI
+        infrastructure, startups, and product development. I spend most of my time building things
+        sometimes they ship, sometimes they teach me something better. Either way, I share what I
+        learn along the way.
       </>
     ),
   },
@@ -113,42 +138,38 @@ const about: About = {
     title: "Work Experience",
     experiences: [
       {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
+        company: "createxp",
+        timeframe: "Sep 2025 - Present",
+        role: "Software Engineer",
         achievements: [
-          <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
-          </>,
-          <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
-          </>,
+          <Fragment key="createxp">
+            Returned to createxp to continue building and scaling product features after a stint at
+            Grit Labs.
+          </Fragment>,
         ],
-        images: [
-          // optional: leave the array empty if you don't want to display images
-          {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Once UI Project",
-            width: 16,
-            height: 9,
-          },
-        ],
+        images: [],
       },
       {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
+        company: "Grit Labs",
+        timeframe: "Jul 2025 - Sep 2025",
+        role: "Software Engineer",
         achievements: [
-          <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
-          </>,
-          <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
-          </>,
+          <Fragment key="grit">
+            Worked on full-stack engineering challenges, contributing to product development and
+            internal tooling at Grit Labs.
+          </Fragment>,
+        ],
+        images: [],
+      },
+      {
+        company: "createxp",
+        timeframe: "May 2025 - Jul 2025",
+        role: "Software Engineer",
+        achievements: [
+          <Fragment key="createxp-initial">
+            Joined createxp as a software engineer, contributing to product development across the
+            full stack.
+          </Fragment>,
         ],
         images: [],
       },
@@ -159,12 +180,12 @@ const about: About = {
     title: "Studies",
     institutions: [
       {
-        name: "University of Jakarta",
-        description: <>Studied software engineering.</>,
+        name: "KMIT, Hyderabad",
+        description: <>Bachelor of Technology in Computer Science (2023 – 2026)</>,
       },
       {
-        name: "Build the Future",
-        description: <>Studied online marketing and personal branding.</>,
+        name: "IOES, Hyderabad",
+        description: <>Diploma in Computer Science (2020 – 2023)</>,
       },
     ],
   },
@@ -173,60 +194,38 @@ const about: About = {
     title: "Technical skills",
     skills: [
       {
-        title: "Figma",
+        title: "Full Stack Development",
         description: (
-          <>Able to prototype in Figma with Once UI with unnatural speed.</>
+          <>Building end-to-end web apps with Next.js, React, TypeScript, and Node.js, from API design to polished UIs.</>
         ),
         tags: [
-          {
-            name: "Figma",
-            icon: "figma",
-          },
+          { name: "TypeScript", icon: "typescript" },
+          { name: "Next.js", icon: "nextjs" },
+          { name: "Node.js", icon: "nodejs" },
         ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        images: [],
       },
       {
-        title: "Next.js",
+        title: "AI & LLM Engineering",
         description: (
-          <>Building next gen apps with Next.js + Once UI + Supabase.</>
+          <>Integrating LLMs into products: RAG pipelines, agentic workflows, tool use, and building AI-native features that actually ship.</>
         ),
         tags: [
-          {
-            name: "JavaScript",
-            icon: "javascript",
-          },
-          {
-            name: "Next.js",
-            icon: "nextjs",
-          },
-          {
-            name: "Supabase",
-            icon: "supabase",
-          },
+          { name: "OpenAI", icon: "openai" },
+          { name: "Python", icon: "python" },
         ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
+        images: [],
+      },
+      {
+        title: "Backend & Infrastructure",
+        description: (
+          <>Designing scalable backend systems, working with databases, queues, and cloud infra. Interested in distributed systems and performance at scale.</>
+        ),
+        tags: [
+          { name: "PostgreSQL", icon: "postgresql" },
+          { name: "Docker", icon: "docker" },
         ],
+        images: [],
       },
     ],
   },
@@ -235,8 +234,8 @@ const about: About = {
 const blog: Blog = {
   path: "/blog",
   label: "Blog",
-  title: "Writing about design and tech...",
-  description: `Read what ${person.name} has been up to recently`,
+  title: "Blog – AI, engineering & building in public",
+  description: "What I'm building, breaking, and figuring out in public. No filter.",
   // Create new blog posts by adding a new .mdx file to app/blog/posts
   // All posts will be listed on the /blog route
 };
@@ -245,7 +244,7 @@ const work: Work = {
   path: "/work",
   label: "Work",
   title: `Projects – ${person.name}`,
-  description: `Design and dev projects by ${person.name}`,
+  description: "AI systems, full-stack products, and Web3 infra I've actually shipped, not just prototyped.",
   // Create new project pages by adding a new .mdx file to app/blog/posts
   // All projects will be listed on the /home and /work routes
 };
@@ -254,7 +253,7 @@ const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
   title: `Photo gallery – ${person.name}`,
-  description: `A photo collection by ${person.name}`,
+  description: "A photo collection of mine.",
   // Images by https://lorant.one
   // These are placeholder images, replace with your own
   images: [
@@ -301,4 +300,11 @@ const gallery: Gallery = {
   ],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery };
+const uses = {
+  path: "/uses",
+  label: "Setup",
+  title: `Setup – ${person.name}`,
+  description: "The tools, hardware, and software I use day to day.",
+};
+
+export { person, social, newsletter, home, about, blog, work, gallery, uses };

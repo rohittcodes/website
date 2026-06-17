@@ -1,14 +1,13 @@
 import { notFound } from "next/navigation";
 import { getPosts } from "@/utils/utils";
 import {
-  Meta,
   Schema,
   AvatarGroup,
   Button,
+  Carousel,
   Column,
   Flex,
   Heading,
-  Media,
   Text,
   SmartLink,
   Row,
@@ -18,6 +17,7 @@ import {
 import { baseURL, about, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash, CustomMDX } from "@/components";
+import { generateSeoMetadata } from "@/utils/seo";
 import { Metadata } from "next";
 import { Projects } from "@/components/work/Projects";
 
@@ -43,11 +43,14 @@ export async function generateMetadata({
 
   if (!post) return {};
 
-  return Meta.generate({
+  return generateSeoMetadata({
     title: post.metadata.title,
     description: post.metadata.summary,
     baseURL: baseURL,
-    image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
+    type: "article",
+    publishedTime: post.metadata.publishedAt,
+    author: { name: person.name, url: `${baseURL}${about.path}` },
+    image: post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`,
     path: `${work.path}/${post.slug}`,
   });
 }
@@ -74,9 +77,9 @@ export default async function Project({
     })) || [];
 
   return (
-    <Column as="section" maxWidth="m" horizontal="center" gap="l">
+    <Column as="section" maxWidth="m" horizontal="center" gap="m" paddingTop="16">
       <Schema
-        as="blogPosting"
+        as="article"
         baseURL={baseURL}
         path={`${work.path}/${post.slug}`}
         title={post.metadata.title}
@@ -92,16 +95,16 @@ export default async function Project({
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Column maxWidth="s" gap="16" horizontal="center" align="center">
+      <Column maxWidth="s" gap="8" horizontal="center" align="center">
         <SmartLink href="/work">
           <Text variant="label-strong-m">Projects</Text>
         </SmartLink>
-        <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
+        <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="4">
           {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
         </Text>
-        <Heading variant="display-strong-m">{post.metadata.title}</Heading>
+        <Heading variant="display-strong-s">{post.metadata.title}</Heading>
       </Column>
-      <Row marginBottom="32" horizontal="center">
+      <Row marginBottom="8" horizontal="center">
         <Row gap="16" vertical="center">
           {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="s" />}
           <Text variant="label-default-m" onBackground="brand-weak">
@@ -118,18 +121,24 @@ export default async function Project({
           </Text>
         </Row>
       </Row>
-      {post.metadata.images.length > 0 && (
-        <Media priority aspectRatio="16 / 9" radius="m" alt="image" src={post.metadata.images[0]} />
+      {post.metadata.images?.length > 0 && (
+        <Carousel
+          sizes="(max-width: 960px) 100vw, 960px"
+          items={post.metadata.images.map((src: string) => ({
+            slide: src,
+            alt: post.metadata.title,
+          }))}
+        />
       )}
       <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
         <CustomMDX source={post.content} />
       </Column>
-      <Column fillWidth gap="40" horizontal="center" marginTop="40">
+      <Column fillWidth gap="16" horizontal="center" marginTop="24">
         <Line maxWidth="40" />
-        <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
-          Related projects
+        <Heading as="h2" variant="heading-strong-m" marginBottom="8">
+          Other projects
         </Heading>
-        <Projects exclude={[post.slug]} range={[2]} />
+        <Projects exclude={[post.slug]} />
       </Column>
       <ScrollToHash />
     </Column>

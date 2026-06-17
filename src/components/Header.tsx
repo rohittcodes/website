@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
-import { routes, display, person, about, blog, work, gallery } from "@/resources";
+import { routes, display, person, about, blog, work, uses } from "@/resources";
 import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Header.module.scss";
 
@@ -61,16 +61,14 @@ export const Header = () => {
       <Row
         fitHeight
         className={styles.position}
-        position="sticky"
+        position="fixed"
+        top="0"
         as="header"
         zIndex={9}
         fillWidth
         padding="8"
         horizontal="center"
         data-border="rounded"
-        s={{
-          position: "fixed",
-        }}
       >
         <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
           {display.location && <Row s={{ hide: true }}>{person.location}</Row>}
@@ -147,21 +145,21 @@ export const Header = () => {
                   </Row>
                 </>
               )}
-              {routes["/gallery"] && (
+              {routes["/uses"] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      label={gallery.label}
-                      selected={pathname.startsWith("/gallery")}
+                      prefixIcon="toolbox"
+                      href="/uses"
+                      label={uses.label}
+                      selected={pathname.startsWith("/uses")}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      selected={pathname.startsWith("/gallery")}
+                      prefixIcon="toolbox"
+                      href="/uses"
+                      selected={pathname.startsWith("/uses")}
                     />
                   </Row>
                 </>

@@ -1,0 +1,44 @@
+---
+title: "3DLabs: Autonomous AI Video Pipeline"
+publishedAt: "2025-09-01"
+summary: "An end-to-end system that turns a topic into a finished documentary-style video in ~8 minutes, with no manual intervention required."
+images:
+  - "/images/projects/3dlabs/cover-01.avif"
+team:
+  - name: "Rohith Singh"
+    role: "Full Stack + AI Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/rohittcodes"
+---
+
+## The Problem
+
+Creating documentary-style videos traditionally requires significant team resources and multi-day timelines. The challenge was compressing the entire production workflow into something a single person could run in minutes, without producing generic-quality AI output.
+
+## What I Built
+
+3DLabs is an end-to-end system that transforms a topic into a finished, production-ready documentary video in roughly 8 minutes. The pipeline runs through ten sequential stages: script generation, scene planning, image creation, animation, voice narration, sound design, and multi-format export, coordinating over a dozen AI models through a unified orchestration layer.
+
+## Technical Highlights
+
+**Visual Coherence**
+Managed prompts and seeds across multiple generation calls to maintain consistent imagery throughout the video. The hard part wasn't calling AI models, it was making the pipeline hold together.
+
+**Model Orchestration**
+Built a unified routing layer across Gemini, Replicate (Flux, Seedance, LTX, Minimax), and ElevenLabs, abstracting each provider's quirks behind a single interface.
+
+**Cost Management**
+Implemented a pre-flight credit reservation system to prevent runaway inference expenses across long, multi-stage generation runs.
+
+**Multi-Tenancy**
+Production-ready authentication and workspace isolation via Clerk, so multiple users can run pipelines concurrently without cross-contamination.
+
+## Stack
+
+Next.js · TypeScript · Google Gemini · Replicate · ElevenLabs · FFmpeg
+
+## Result
+
+- Finished, production-ready videos in ~8 minutes from a single topic input
+- Eliminated days of manual production work per video
+- Coordinated a dozen+ AI models through one orchestration layer without manual glue work

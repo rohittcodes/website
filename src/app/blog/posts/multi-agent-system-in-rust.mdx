@@ -1,0 +1,178 @@
+---
+title: "Can You Build AI Agents in Rust? Yep, and Here's How I Did It"
+publishedAt: "2025-08-19"
+summary: "Everyone builds AI agents in Python or JavaScript. I built a multi-agent system in Rust instead, orchestrating Linear, GitHub, and Supabase through MCP."
+tag: "AI"
+image: "/images/blog/ai-agents-rust.png"
+---
+
+Everyone's building AI agents these days, and everyone's teaching you how to do it in Python or JavaScript. Nothing wrong with **Python**. It's fast to prototype with and has a mature ecosystem. But I wanted to try something different. What if we could build a **multi-agent system** that orchestrates different specialised agents, each connected to real-world tools via MCP (Model Context Protocol), and what if we built it in **Rust**?
+
+That's exactly why I built **Codepilot**, a multi-agent system that can handle Linear project management, GitHub repository operations, and Supabase tasks, all through a terminal UI.
+
+It's a fun side project, and if you're curious and want to try things with Rust, maybe you'll find this useful. The source code is available on my GitHub here: [rohittcodes/codepilot](https://github.com/rohittcodes/codepilot).
+
+## Why a multi-agent system, and why Rust in particular?
+
+Traditional AI agents are great, but they often struggle when you need to handle multiple domains or complex workflows. What if you want to:
+
+- Create a GitHub issue and link it to a Linear project.
+- Query your Supabase database and create a summary report.
+- Manage repositories across different services.
+
+A **multi-agent system** solves this by having specialized agents that can collaborate and orchestrate complex workflows.
+
+### And why Rust?
+
+Rust isn't the usual go-to for AI, but it has some clear benefits:
+
+- **Performance**: zero-cost abstractions and memory safety mean your agent runs fast without eating resources.
+- **Type safety**: errors can be caught at compile time, not when your agent's halfway through a task.
+- **Ecosystem potential**: although the AI ecosystem is more mature in Python, Rust's async/await model and strict typing make it a good fit for agents juggling multiple tools, APIs, or tasks.
+
+## What is an AI agent, anyway?
+
+An **AI agent** is a program that can understand your intent and take actions on your behalf. Think of it as an assistant that doesn't just chat, it does things. In this case, the agent understands when you're asking about Linear issues, GitHub repositories, or Supabase data, and then calls the appropriate APIs to retrieve the information, combining it with natural language responses.
+
+One key insight: **LLMs** excel at understanding intent, but struggle to access real-time information. By combining LLMs with APIs, you get a program that automates tasks for you, natural language understanding plus real-time information access.
+
+## Getting started
+
+Just a plain **Rust binary project**, a few crates to make async work easier, and enough structure to plug in the tools.
+
+```bash
+cargo new codepilot
+cd codepilot
+```
+
+Add these dependencies to `Cargo.toml`:
+
+```toml
+[dependencies]
+anyhow = "1"
+chrono = { version = "0.4", features = ["serde"] }
+dotenv = "0.15"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+swarms-rs = "0.1.9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+crossterm = "0.27"
+tui = "0.19"
+ratatui = "0.24"
+regex = "1.10"
+```
+
+The core idea: a multi-agent system with specialized agents, each with tools the LLM can call, then the LLM decides which agent to use based on the user's query.
+
+```rust
+// src/agents/linear.rs
+pub struct LinearAgent {
+    agent: Box<dyn Agent>,
+    linear_client: LinearMCPClient,
+    available_tools: Vec<ToolInfo>,
+}
+
+impl LinearAgent {
+    pub async fn new(api_key: String, config: &Config) -> Result<Self> {
+        // Initialize agent with dynamic tool discovery
+    }
+}
+```
+
+## Integrating Composio MCP servers
+
+To connect each agent with real-world APIs, I used [Composio MCP integration](https://platform.composio.dev/). These servers expose authenticated API actions your agents can call, without you having to handwrite integrations.
+
+For Codepilot, I set up MCP servers for:
+
+- **GitHub**: repos, issues, PRs.
+- **Linear**: project and issue management.
+- **Supabase**: querying and updating data.
+
+## Architecture
+
+The core architecture is built around three principles:
+
+1. **Specialized agents**: each agent (Linear, GitHub, Supabase) is an expert in its domain.
+2. **MCP integration**: all agents connect to MCP tools via Composio.
+3. **Intelligent orchestration**: a central orchestrator routes queries to the right agent.
+
+```rust
+pub struct MultiAgentOrchestrator {
+    linear_agent: LinearAgent,
+    github_agent: GitHubAgent,
+    supabase_agent: SupabaseAgent,
+}
+```
+
+Each agent discovers its tools dynamically from MCP servers:
+
+```rust
+impl LinearAgent {
+    pub async fn new(api_key: String, config: &Config) -> Result<Self> {
+        let linear_client = LinearMCPClient::new(config);
+
+        let tools_response = linear_client.get_tools().await?;
+        let available_tools: Vec<ToolInfo> = tools_response
+            .iter()
+            .map(|tool| ToolInfo {
+                name: tool["name"].as_str().unwrap_or("unknown").to_string(),
+                description: tool["description"].as_str().unwrap_or("No description").to_string(),
+                input_schema: tool["inputSchema"].clone(),
+            })
+            .collect();
+    }
+}
+```
+
+This means no hardcoded operations, the agents automatically adapt to whatever tools are available on their MCP servers.
+
+## How tool selection works
+
+The system uses pure LLM-based tool selection with intelligent fallbacks. When you ask a question:
+
+```rust
+// 1. LLM analyzes the query and mentions specific tools
+let llm_response = self.agent.run(query.to_string()).await?;
+// LLM says: "I would use GITHUB_LIST_REPOSITORIES to fetch your repositories"
+
+// 2. Parse LLM guidance to extract tool selection
+for tool in &self.available_tools {
+    if guidance_lower.contains(&tool.name) {
+        return self.execute_tool(tool, arguments).await;
+    }
+}
+
+// 3. If LLM doesn't mention tools, provide a clear error message
+return Ok("I don't have a tool for that request. Available tools are: [list tools]");
+```
+
+To prevent the LLM from calling internal tools, each agent runs with a constrained configuration:
+
+```rust
+let agent = client
+    .agent_builder()
+    .agent_name("GitHubAgent")
+    .system_prompt(system_prompt)
+    .user_name("User")
+    .max_loops(1)
+    .temperature(0.1)
+    .max_tokens(2048)
+    .build();
+```
+
+When you ask "List all my GitHub repositories", the system:
+
+1. **Orchestrator LLM** → "USE_GITHUB_AGENT"
+2. **GitHub Agent LLM** → "I would use GITHUB_LIST_REPOSITORIES to fetch your repositories."
+3. **Tool execution** → executes `GITHUB_LIST_REPOSITORIES` with proper arguments.
+4. **Result** → LLM reasoning plus the GitHub operation result.
+
+## Conclusion
+
+This was a fun project to work on, given the usual Python-heavy agent world. Rust isn't traditionally the go-to for these AI workflows, but it's surprisingly capable at handling real-world agent logic once you get past the initial setup. The type system gives you confidence, async works well enough, and once the tools are in place, everything is straightforward to plug together.
+
+Not production-ready yet, but as a weekend project to learn things, it's worth trying. The complete source code is here: [rohittcodes/codepilot](https://github.com/rohittcodes/codepilot).

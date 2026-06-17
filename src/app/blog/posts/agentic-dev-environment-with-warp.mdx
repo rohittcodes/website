@@ -1,0 +1,176 @@
+---
+title: "The Missing Layer Between You and Your AI Agent"
+publishedAt: "2026-04-21"
+summary: "Running Claude Code, Codex, and OpenCode in parallel used to mean four terminal windows and constant context-switching. Here's how an agentic development environment fixes that."
+tag: "AI"
+image: "/images/blog/missing-layer-ai-agent.png"
+---
+
+Three agents, four terminal windows, no idea which one's waiting on me. That was my setup three weeks ago.
+
+I run Claude Code, Codex, and OpenCode depending on what I'm building. Each one behaves differently and after a while you just reach for the right one instinctively, Claude Code for deep context across files, Codex for something faster and surgical, OpenCode when I want to experiment with open source models on the same problem.
+
+But the agent is only part of the setup. There's everything around it too, where it runs, how you know when it needs you, how you review what it did, how you manage three of them without losing track. Most people are running powerful agents inside a terminal that hasn't changed in decades. You kick off a task, come back 15 minutes later, it's been waiting on a permission prompt. Two agents going at once and you're hoping you remember which window is which.
+
+That's the gap. I've been using [Warp](https://warp.dev/) as that environment, specifically as an ADE, an Agentic Development Environment. A terminal runs commands. An ADE is built around the assumption that an agent is doing most of the work and you're steering it.
+
+> *Warp doesn't replace Claude Code, Codex, or OpenCode. I still run all three. It's the environment they run inside, nothing about your existing agent workflow changes.*
+
+## TL;DR
+
+If you're already running CLI agents daily and just want the highlights, here's what changes:
+
+| What | Why it matters |
+| --- | --- |
+| Vertical tabs + metadata | See all running agents and their state instantly, no tab-hunting |
+| Tab Configs (`.toml`) | Save your entire multi-agent workspace, reopen it with one click |
+| Notifications | Agents ping you when they need attention, stop watching the terminal |
+| Code review panel | Review diffs and send inline corrections directly to the running agent |
+| Rich input (`Ctrl+G`) | Multiline prompts, `@file` references, image attachments, voice input |
+| Oz cloud agents | Agents that run in the background without your machine open |
+| Warp Drive | Workflows, Rules, MCP servers, Prompts, synced across your team |
+| Session sharing | Share a link from the tab menu, anyone can monitor or steer the agent |
+
+## Setting up
+
+Make sure your agents are installed:
+
+```bash
+# Claude Code, requires a paid Claude plan or API credits
+npm install -g @anthropic-ai/claude-code
+
+# OpenCode
+npm install -g opencode-ai
+
+# Codex
+npm install -g @openai/codex
+```
+
+Verify them:
+
+```bash
+claude --version
+opencode --version
+codex --version
+```
+
+## Codebase indexing + AGENTS.md
+
+Before running any agent, let Warp index your project first.
+
+Navigate to your project directory and start an agent session. On first run a dialog pops up asking if you want to index the codebase, confirm it. You can track the status anytime under **Settings → AI → Codebase Indexing**, which shows "Synced" once it's done.
+
+After indexing, Warp generates an `AGENTS.md` file at your project root, persistent context for every agent session. Your stack, conventions, commands, things the agent should know before touching anything. The filename must be all caps for Warp to pick it up automatically. If you already have a `CLAUDE.md` in your project, it carries over as-is.
+
+## Vertical tabs + Tab Configs
+
+Enable vertical tabs from **Settings → Appearance → Tabs → Use vertical tab layout**.
+
+New tab: `Ctrl+Shift+T`. Once vertical tabs are on, your sessions live in a sidebar instead of stacked at the top, showing which agent is running, which branch you're on, working directory, and whether the agent is active, waiting for input, or idle. All visible without clicking into anything.
+
+**Tab Configs** are how you save this setup permanently. Each config is a `.toml` file stored in `~/.warp/tab_configs/`. To create one: click the `+` button in the tab bar → **New tab config**, or hit `Ctrl+Alt+Shift+T`. Warp creates the file and opens it for editing.
+
+Here's what mine actually looks like for a multi-agent setup:
+
+```toml
+name = "Agent Workspace"
+color = "blue"
+
+[[panes]]
+id = "root"
+split = "horizontal"
+children = ["claude", "opencode"]
+
+[[panes]]
+id = "claude"
+type = "terminal"
+directory = "C:\\Users\\rohit\\projects\\content-machine"
+commands = ["claude"]
+is_focused = true
+
+[[panes]]
+id = "opencode"
+type = "terminal"
+directory = "C:\\Users\\rohit\\projects\\content-machine"
+commands = ["opencode"]
+```
+
+This opens two panes side by side, both pointing at the same project, each launching their agent automatically. One click and the entire workspace is live.
+
+Pane type can be `"terminal"`, `"agent"` for Warp's Agent Mode, or `"cloud"` for a cloud pane with no local shell. You can also parameterize configs with `branch_name` style placeholders, Warp prompts you to fill in values when the tab opens, which pairs well with git worktrees.
+
+## Running parallel agents
+
+With Tab Configs set up, running multiple agents in parallel is just opening the right tabs.
+
+The workflow I use: give each agent a different task on an isolated git worktree so they're not touching the same files simultaneously.
+
+```bash
+# Tab 1, Claude Code on feature work
+cd ~/projects/myapp
+claude
+# "Refactor src/auth/ to use async/await instead of callbacks"
+
+# Tab 2, Codex writing tests in parallel
+cd ~/projects/myapp-worktree
+codex
+# "Write comprehensive tests for src/auth/ covering edge cases"
+```
+
+Create one Tab Config that opens both side by side, each pointing at different worktrees. Next time you sit down, one click and both agents are already running.
+
+## Notifications
+
+Before this I had two modes: watch the terminal, or walk away and miss things. Warp fixes this with a unified notification center. Setup is one-time per agent:
+
+- **Claude Code**, run `claude` inside Warp and a notification chip appears at the bottom. One click installs the plugin.
+- **Codex**, Warp sets it up automatically the first time you run it. Nothing manual required.
+- **OpenCode**, add the plugin to your `opencode.json`.
+
+When you have multiple agents running, the vertical tab sidebar shows an attention-needed indicator when any session needs input, click it to jump directly there.
+
+## Code review
+
+Agents get you to about 80% on most tasks. The rest is you, reviewing what it did, catching what it got wrong, redirecting it.
+
+Warp has a code review panel built in. After the agent makes changes, open it from the top right toggle. Inline diff per file. Leave a comment on any line and it sends directly to the running agent session. The agent picks it up and iterates, no starting over, no copy-pasting feedback.
+
+## Rich input + agent toolbar
+
+`Ctrl+G` opens Warp's rich input editor for any agent session, a proper text editor, not a terminal prompt. Multiline prompts, `@filename` to attach file context inline, image attachments, `/prompts` for saved templates.
+
+Every CLI agent session gets a toolbar at the top of the pane, same one regardless of whether you're running Claude Code, Codex, or OpenCode. The image attachment is particularly useful for UI debugging, drop a screenshot of what's broken directly into the session instead of describing it in text.
+
+## Oz: agents that run without you
+
+Local agents run on your machine, in your terminal. Oz adds a second layer, agents that run in Warp's cloud infrastructure, in the background, without your machine needing to be open.
+
+The practical difference:
+
+- **Parallel work without parallel machines**, kick off a bug fix, a refactor, and a PR review simultaneously.
+- **Remote steering**, start a task, close your laptop, check in from your phone or browser later.
+- **Triggers**, connect Oz to GitHub, Linear, or Slack so agents fire automatically when issues are filed or PRs are opened.
+
+Cloud agents share the same context as local ones, same `AGENTS.md`, same codebase index, same Warp Drive rules. An agent you start locally and hand off to the cloud picks up exactly where it left off.
+
+## Warp Drive: shared context for everything
+
+Warp Drive is a side panel where you store and sync Workflows, Prompts, Notebooks, Rules, and Environment Variables, personally or across a team.
+
+Three things I actually use daily:
+
+**Workflows** are saved commands with parameterized arguments, a deploy command, a test runner with flags, a git flow.
+
+**Rules** are persistent context for agents. Global rules apply to every session. Project rules live in `AGENTS.md` or `WARP.md` and apply automatically when you're in that project.
+
+**MCP Servers** connect your agents to external tools, Linear for tickets, GitHub for PRs, Figma, Sentry, Slack. MCP configs are shareable across a team, onboarding becomes handing someone a Warp invite.
+
+## My actual setup
+
+Three vertical tabs, Claude Code on the dev branch, OpenCode on a worktree for whatever parallel task I've got going, plain shell for git and the dev server. `AGENTS.md` covers the stack and conventions. A handful of Rules for things I was repeating in every prompt. GitHub and Linear MCP servers so the agent can actually look at issues and PRs without me copy-pasting.
+
+The Tab Config TOML is maybe 15 lines. The `AGENTS.md` took a few sessions to refine. The whole thing took about an hour to set up properly.
+
+What I notice day to day isn't any single feature. It's that I stopped context-switching. The agent runs, I do something else, a notification tells me when it needs me, I leave a code review comment, it keeps going. That loop, which used to require four windows and a lot of manual attention, now just happens.
+
+The agents didn't change. The environment did. Turns out that was most of the problem.

@@ -1,0 +1,60 @@
+@media print {
+  /* Hide site chrome */
+  header,
+  footer,
+  nav,
+  .printButton {
+    display: none !important;
+  }
+
+  /* White background, black text */
+  body,
+  [data-theme],
+  [data-neutral],
+  [data-background] {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Reset page */
+  @page {
+    margin: 1.5cm 2cm;
+    size: A4;
+  }
+
+  /* Remove shadows, borders, translucency */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background: transparent !important;
+    border-color: #cccccc !important;
+  }
+
+  /* Readable body text */
+  p, li, span {
+    color: #111111 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  h1, h2, h3 {
+    color: #000000 !important;
+    page-break-after: avoid;
+  }
+
+  /* Avoid breaking inside sections */
+  section, .section {
+    page-break-inside: avoid;
+  }
+
+  /* Keep links readable */
+  a {
+    color: #000000 !important;
+    text-decoration: underline;
+  }
+
+  /* Hide tag chips, redundant on paper */
+  [class*="tag"], [class*="Tag"] {
+    display: none !important;
+  }
+}

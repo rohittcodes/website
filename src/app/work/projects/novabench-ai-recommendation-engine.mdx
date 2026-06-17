@@ -1,0 +1,46 @@
+---
+title: "NovaBench: AI Recommendation Engine"
+publishedAt: "2025-06-01"
+summary: "A conversational laptop recommendation system using RAG over benchmark data, editorial content, and semantic search, replacing keyword search with intent-aware conversational retrieval."
+images:
+  - "/images/projects/novabench/cover-01.avif"
+team:
+  - name: "Rohith Singh"
+    role: "Full Stack + AI Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/rohittcodes"
+---
+
+## The Problem
+
+The client operated a massive, high-velocity laptop catalog where traditional keyword search was failing. Queries like *"something lightweight for heavy video editing under 1.5kg"* returned irrelevant results: the search engine had no concept of intent, only tokens.
+
+Low engagement and missed conversions were the direct result.
+
+## What I Built
+
+An end-to-end RAG pipeline that moves beyond keywords to understand the deep context of every query. The system extracts structured intent from natural language, retrieves semantically relevant products, and streams a conversational response, all under 200ms.
+
+## Technical Highlights
+
+**Intent Extraction**
+Used Gemini Flash to map raw natural language into structured filters, including price range, GPU class, weight threshold, and use case, before ever touching the database.
+
+**Semantic Retrieval**
+Implemented Sentence Transformers (`e5-base-v2`) generating dense embeddings stored in `pgvector`. Queries are embedded at runtime and matched via cosine similarity, not keyword overlap.
+
+**High-Speed Serving**
+Built the backend on FastAPI with Redis caching for hot catalog entries. Streaming responses via SSE keep perceived latency low even on complex multi-filter queries.
+
+**Production Hardening**
+Deployed as a Dockerized microservice with structured logging, request-level auth, and connection pooling tuned for high-concurrency traffic.
+
+## Stack
+
+FastAPI · PostgreSQL + pgvector · Redis · GPT-4o · Gemini Flash · Sentence Transformers · Docker · Python
+
+## Result
+
+- Sub-200ms end-to-end latency for real-time streaming responses
+- 99.5% uptime in production
+- Transformed product search into a conversational advisory experience: users describe needs, the engine recommends with reasoning

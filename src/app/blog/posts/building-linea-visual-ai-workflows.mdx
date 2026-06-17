@@ -1,0 +1,88 @@
+---
+title: "Building Linea: what I learned designing a visual AI workflow engine"
+publishedAt: "2025-06-03"
+summary: "Most AI agent frameworks hide complexity behind abstractions that break the moment your workflow gets interesting. I built Linea to make agent logic visible, editable, and actually debuggable."
+tag: "AI"
+image: "/images/projects/linea/cover-01.avif"
+---
+
+The first agentic system I built was embarrassing in hindsight. It was a Python script with a 400-line prompt, a for-loop that called GPT-4 repeatedly, and a global dict for "memory." It worked. It also failed in ways I couldn't explain, couldn't reproduce reliably, and couldn't hand to anyone else without a 30-minute walkthrough.
+
+That's the agent problem in one paragraph: not that the AI doesn't work, but that the system around it is invisible.
+
+Linea started as a frustration project. It became the most technically interesting thing I've built.
+
+## Why another agent framework
+
+There's no shortage of agent frameworks. LangChain, AutoGen, CrewAI, LlamaIndex, they're all solving variations of the same problem. I used most of them. They're useful until they're not, and the moment they stop being useful, you're fighting the abstraction.
+
+The specific failure mode I kept hitting: *something in the middle of the pipeline went wrong and I had no idea what.*
+
+An agent calls a tool. The tool returns unexpected output. The LLM misinterprets it. Two steps later, the whole workflow produces garbage, but the garbage looks plausible enough that you almost ship it.
+
+With a traditional framework, debugging this means reading logs, tracing through library internals, and reasoning about state that exists in memory and nowhere else. It's archaeology.
+
+The insight behind Linea: **if the workflow is a graph, make the graph visible.** Every node is a step. Every edge is data flowing between steps. You can see the pipeline, click on any node to inspect its inputs and outputs, and know exactly where things went wrong.
+
+## The technical core: React Flow + a real state machine
+
+The visual layer is built on React Flow. That part was straightforward: nodes, edges, a canvas, drag-and-drop. React Flow handles the rendering well and gets out of the way.
+
+The hard part was what sits underneath: the execution engine.
+
+When you run a workflow, you're not just executing nodes sequentially. You're managing:
+
+- **Streaming state**: an LLM node might produce tokens over 2-3 seconds. What does the downstream node see while tokens are arriving?
+- **Branching**: a condition node routes data to different paths based on LLM output. The paths might run in parallel.
+- **Tool use**: an agent node calls an external API and waits. The wait is asynchronous, but the state machine needs to track that it's pending.
+- **Error recovery**: a step fails. Do you retry? Fallback? Halt the whole workflow?
+
+My first version modeled this as a simple state machine with four states per node: `idle → running → complete → error`. That broke immediately when I added streaming.
+
+A streaming LLM node isn't `running` and then `complete`. It's `running` and *emitting tokens* for the duration. Downstream nodes that depend on its output need to know: is this token a partial result I should buffer, or a complete result I can act on?
+
+The fix was making streaming a first-class state: `idle → running → streaming → complete | error`. The streaming state emits events that downstream nodes can subscribe to. Nodes that need the full output wait for `complete`. Nodes that can process incrementally (like a display node) start rendering immediately.
+
+This sounds obvious in retrospect. It took me longer to figure out than I'd like to admit.
+
+## The memory problem
+
+The other hard problem was context across multi-step workflows.
+
+Say you have a five-node pipeline: classify the input, retrieve relevant documents, summarize, validate, respond. By the time you're at the validate step, the LLM needs context from step one, the retrieved documents from step two, and the summary from step three.
+
+Naive approach: pass all previous outputs as context to every node. This works until your context window fills up, which happens faster than you expect when you're concatenating structured retrieval outputs.
+
+The approach I settled on: each node has an explicit set of context dependencies. You wire them in the graph: a line from node A's output to node C's context input. The execution engine only passes what each node actually needs.
+
+This has a secondary benefit: it makes the data flow visible in the graph itself. You can look at the canvas and know exactly what information each step has access to. No hidden global state, no implicit context propagation.
+
+The memory layer underneath uses pgvector for long-term retrieval. But the graph-level wiring is what makes it tractable. RAG without explicit context management just moves the invisible state problem from memory to embeddings.
+
+## Streaming responses in a visual interface
+
+One thing I didn't anticipate: streaming is actually *harder* to show well in a node-based UI than in a chat interface.
+
+In a chat interface, tokens appear in a text box. Simple. In a node-based interface, a streaming node needs to show partial output in its node card, propagate partial tokens to downstream nodes that subscribe to streaming, and not redraw the entire canvas on every token emission.
+
+The performance problem here is real. React Flow re-renders on state changes. If you naively put streaming token state in React state, you get 30+ re-renders per second during LLM output. The canvas visibly stutters.
+
+The fix: streaming token state lives outside React in a ref-based store. Components that need to display streaming output subscribe directly to the store via a custom hook, bypassing React's render cycle. The canvas only re-renders when structural state changes (node status, edge routing), not on every token.
+
+This pattern, separating "fast" streaming state from "slow" structural state, ended up being important throughout the codebase.
+
+## What I'd do differently
+
+**Build observability first.** I added execution logging late in the project. Every run should have written a structured trace from day one: which nodes ran, in what order, with what inputs and outputs, and how long each step took. Debugging would have been dramatically easier.
+
+**Fewer node types, more composable.** I started with specialized nodes for specific use cases (a "Stripe node", a "Slack node"). The right abstraction is a generic "HTTP tool" node that takes a URL and payload schema. Specific integrations should be templates, not primitives.
+
+**The visual layer is a product decision, not a technical one.** The hardest question in building Linea wasn't about state machines or React Flow, it was "what does a non-engineer actually need to see?" I still don't have a perfect answer to that.
+
+---
+
+The interesting thing about building Linea is that the value isn't in the AI part. The LLM calls are commodity. The value is in making the non-AI parts (orchestration, state, data flow, observability) visible and manageable.
+
+Most agent frameworks treat those parts as implementation details. Linea treats them as the product.
+
+That's the bet. I think it's the right one.

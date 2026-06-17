@@ -10,11 +10,24 @@ const nextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   transpilePackages: ["next-mdx-remote"],
   images: {
+    localPatterns: [
+      {
+        pathname: "/images/**",
+      },
+      {
+        pathname: "/api/og/generate",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "www.google.com",
         pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "dev-to-uploads.s3.amazonaws.com",
+        pathname: "/uploads/**",
       },
     ],
   },

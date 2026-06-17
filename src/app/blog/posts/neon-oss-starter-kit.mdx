@@ -1,0 +1,58 @@
+---
+title: "Neon OSS Kit: Ship Your Next.js Apps Faster Than Ever"
+publishedAt: "2024-08-28"
+summary: "A Node.js CLI that scaffolds production-ready Next.js SaaS starters with Neon, Clerk, and your choice of Prisma or Drizzle. Built for the Neon Open Source Starter Kit Challenge."
+tag: "Backend"
+image: "/images/blog/neon-osskit.jpg"
+---
+
+*This was a submission for the Neon Open Source Starter Kit Challenge: Ultimate Starter Kit.*
+
+## My kit
+
+For the Neon OSS Challenge, I built a Node.js CLI for shipping Next.js SaaS applications much faster than usual. The idea was to handle multiple starter templates at once. For now, the starter kit comes in two flavors:
+
+- A Next.js project with Drizzle ORM
+- A Next.js project with Prisma
+
+## Why a Neon OSS starter kit?
+
+It's common to start a new project by copying and pasting code from a previous one. That's time-consuming and error-prone. The Neon OSS Starter Kit provides a well-documented, easy-to-use starting point for SaaS projects built on Neon.
+
+It's not just a database connected to a frontend either, you can use Neon as a vector database, plus Axios for server-side calls. More on those in the [Neon OSS Kit docs](https://osskit-neon.vercel.app).
+
+### Tools and features
+
+- Neon (database)
+- Clerk (authentication)
+- Prisma / Drizzle (ORM tools)
+- Axios (HTTP client)
+- A customizable frontend powered by React, Next.js, shadcn/ui, and Tailwind CSS
+
+To scaffold the kit, run:
+
+```bash
+npx @rohittcodes/neon-osskit@latest
+```
+
+> This creates a Next.js project with Prisma by default. Pass `drizzle` or `prisma` explicitly for the ORM you want:
+
+```bash
+npx @rohittcodes/neon-osskit@latest drizzle
+```
+
+## Link to the kit
+
+The starter kit is split across a few repositories, documented in the [main docs repo](https://github.com/rohittcodes/neon-osskit):
+
+- The Node.js [CLI](https://github.com/RohittCodes/neon-osskit-cli), powered by two templates:
+  - [Prisma](https://github.com/RohittCodes/neon-osskit-prisma): a modern database toolkit with type-safe access and declarative data modeling.
+  - [Drizzle](https://github.com/RohittCodes/neon-osskit-drizzle): a lightweight ORM with a simple, intuitive API.
+
+The plan going forward is to consolidate these into a single monorepo.
+
+## The journey
+
+Developing tools meant for better utilization is what drives me, and this Node.js CLI was the first of its kind for me. I'd been working on full-stack projects for a while, but this challenge gave me the chance to build something I'd wanted to since my early days. It isn't fully complete yet, I'll keep adding features and work toward that monorepo.
+
+The journey was hectic at times, but worth it. The official Neon documentation made a lot of it easier, even though scaffolding a CLI for multiple templates instead of just one meant starting later than I'd planned.

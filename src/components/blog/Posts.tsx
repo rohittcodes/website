@@ -8,6 +8,7 @@ interface PostsProps {
   thumbnail?: boolean;
   direction?: "row" | "column";
   exclude?: string[];
+  tag?: string;
 }
 
 export function Posts({
@@ -16,12 +17,16 @@ export function Posts({
   thumbnail = false,
   exclude = [],
   direction,
+  tag,
 }: PostsProps) {
   let allBlogs = getPosts(["src", "app", "blog", "posts"]);
 
-  // Exclude by slug (exact match)
   if (exclude.length) {
     allBlogs = allBlogs.filter((post) => !exclude.includes(post.slug));
+  }
+
+  if (tag) {
+    allBlogs = allBlogs.filter((post) => post.metadata.tag === tag);
   }
 
   const sortedBlogs = allBlogs.sort((a, b) => {
@@ -35,7 +40,7 @@ export function Posts({
   return (
     <>
       {displayedBlogs.length > 0 && (
-        <Grid columns={columns} s={{ columns: 1 }} fillWidth marginBottom="40" gap="16">
+        <Grid columns={columns} s={{ columns: 1 }} fillWidth marginBottom="16" gap="12">
           {displayedBlogs.map((post) => (
             <Post key={post.slug} post={post} thumbnail={thumbnail} direction={direction} />
           ))}

@@ -28,7 +28,7 @@ export default function Icon() {
           src={getAvatarDataUri()}
           width={size.width}
           height={size.height}
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", borderRadius: "50%" }}
         />
       </div>
     ),

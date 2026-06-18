@@ -29,13 +29,27 @@ Translated backend agentic logic into high-performance real-time interfaces. The
 **Solana Integration**
 Handled deep integration with Solana and on-chain protocols: wallet connection, transaction signing, on-chain state reads, and settlement verification. Built to production-grade reliability, with no silent failures on money-moving operations.
 
+This meant going well past a basic `sendTransaction` call:
+
+- **Compute budget sizing** — simulating each transaction first and setting `ComputeBudgetProgram.setComputeUnitLimit` from real consumption instead of flat-maxing at 1.4M units, which silently overpays on fees under load.
+- **Priority fee strategy** — pricing `setComputeUnitPrice` off live `getRecentPrioritizationFees` data scoped to the accounts being written to, with an explicit ceiling so fee escalation during congestion never runs unbounded.
+- **Blockhash expiry handling** — fetching the blockhash immediately before signing and polling confirmation against `lastValidBlockHeight` rather than a fixed timeout, since a bet settling late or appearing to silently fail breaks player trust instantly.
+- **Versioned transactions** — moving to v0 transactions to stay inside the 1232-byte packet limit as game logic accounts grew, ahead of strictly needing an address lookup table.
+- **Settlement verification** — confirming on-chain state actually reflects the expected outcome before updating the UI, so a dropped or reorged transaction can never show a player a result that didn't really settle.
+
 ## Technical Focus
 
 - Sub-100ms UI responsiveness, essential when players are making high-stakes bets in real time
 - Solana wallet adapter integration with robust error handling for failed or dropped transactions
 - Real-time on-chain state polling with optimistic UI updates to avoid perceived lag
 - Clean separation between game UI state and blockchain state to keep rendering predictable
+- Compute unit and priority fee strategy tuned per-transaction from simulation and live fee-market data, not guessed constants
+- Bounded retry/confirmation logic around blockhash expiry instead of fixed timeouts
 
 ## Stack
 
-Next.js · TypeScript · Solana Web3.js · Wallet Adapter · React Query · WebSockets
+Next.js · TypeScript · Solana Web3.js · Wallet Adapter · Versioned Transactions (v0) · Compute Budget Program · React Query · WebSockets
+
+## Related Work
+
+The transaction-landing failure modes I had to solve here, stale blockhashes, unsized compute budgets, no fee strategy, no retry/confirmation logic, became the basis for [solana-tx-landing](https://github.com/rohittcodes/solana-tx-landing), a Claude Code agent skill for reliably landing Solana transactions.

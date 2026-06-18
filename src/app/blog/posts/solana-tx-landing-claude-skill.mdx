@@ -1,0 +1,47 @@
+---
+title: "I kept hitting the same Solana bugs, so I turned them into a Claude Code skill"
+publishedAt: "2026-06-19"
+summary: "Stale blockhashes, guessed compute units, unbounded fee escalation: I solved these for real on jumble[cash], then wrote down the fix as solana-tx-landing, an agent skill for reliably landing Solana transactions."
+tag: "Solana"
+---
+
+Most of the Solana bugs I've shipped weren't program bugs. The program was fine. The transaction carrying it to the chain was the problem.
+
+I learned this the hard way building [jumble[cash]](/work/jumblecash-onchain-arcade), an on-chain arcade where every game outcome settles via a real Solana transaction, with real money attached. There's no room for "it probably landed." Either it settled on-chain and the player can verify it, or something is badly wrong.
+
+That constraint forced me to actually learn the operational layer underneath Solana transactions, the part that program tutorials and protocol docs mostly skip. Compute budgets. Priority fee markets. Blockhash expiry. None of this is exotic. All of it is the difference between a transaction landing and silently failing during congestion.
+
+## The pattern everywhere
+
+Once you start looking for it, the same mistakes show up in almost every Solana codebase, including early versions of mine:
+
+- `ComputeBudgetProgram.setComputeUnitLimit({ units: 1_400_000 })` — the max possible limit, set as a default. It never runs out of compute, but it overpays on fees, since priority fee cost scales with the limit you ask for, not what you actually use.
+- A blockhash fetched once, early in the flow, and reused minutes later when the transaction finally gets sent — well past the point where it's still valid.
+- `setComputeUnitPrice` set to a flat constant, written once and never revisited, while the actual fee market moves by the block.
+- A confirmation loop that's really just `setTimeout(30000)` and a single status check, which either gives up too early or hangs past the point the blockhash has already expired.
+
+None of these are hard to fix individually. What's hard is remembering to fix all of them, every time, on every transaction-sending code path, especially once a codebase has more than one of them.
+
+## Turning the fix into a skill
+
+After fixing this enough times by hand, I wrote it down as [solana-tx-landing](https://github.com/rohittcodes/solana-tx-landing), a Claude Code skill: a set of recipes, reference docs, and an enforced TypeScript rule file that applies the fix automatically whenever a transaction is built, sized, signed, or sent.
+
+The core of it is one line: **simulate before sizing, size before sending, cap before escalating.**
+
+- **Simulate first.** Run the transaction through `simulateTransaction` before you ever decide how much compute it needs. The simulation tells you the real `unitsConsumed`, not a guess.
+- **Size from the simulation.** Set the compute unit limit to that real number plus a small margin, not the network maximum.
+- **Price fees from live data.** Pull `getRecentPrioritizationFees` for the accounts you're about to write to, not a hardcoded constant, and compute a percentile-based recommendation.
+- **Fetch the blockhash last.** Get it immediately before signing, not earlier in the flow, and poll confirmation against `lastValidBlockHeight` instead of a fixed timeout.
+- **Cap before you escalate.** If a transaction needs to retry with a higher fee, the ceiling is explicit and agreed up front, never an unbounded multiply-and-pray loop.
+
+The skill also ships three commands that hit live mainnet RPC instead of reasoning from memory: `/debug-stuck-tx` to diagnose a real signature, `/optimize-fees` to get a live fee recommendation for specific accounts, and `/network-health` to check whether the whole network is under strain before tuning a single transaction.
+
+## Why this, and not another DeFi or NFT skill
+
+The existing Solana skill ecosystem, the Solana Foundation's own skill and the protocol-specific ones, covers programs, testing, security, and individual integrations in real depth. None of them cover the layer underneath all of it: getting an already-correct transaction to actually land, cheaply and reliably, under real network conditions.
+
+That's deliberately the only thing this skill does. It's protocol-agnostic, so it sits underneath a Jupiter integration, a custom Anchor program, or a trading bot equally well, instead of competing with any of them.
+
+## What I'd tell past-me
+
+Write down the fix the first time you make it, not the third time. Every one of these failure modes cost real debugging time on jumble[cash] before I had language for what was actually going wrong. "The transaction didn't land" is not a diagnosis. "The blockhash expired because confirmation was polling against a fixed timeout instead of `lastValidBlockHeight`" is. The skill is mostly that distinction, made repeatable.

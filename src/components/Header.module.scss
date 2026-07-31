@@ -8,6 +8,30 @@
     mask-size: 100% 100%;
 }
 
+.navButton {
+    height: var(--static-space-40);
+    min-height: var(--static-space-40);
+    padding-inline: var(--static-space-12);
+
+    :global(svg) {
+        width: 1.15em;
+        height: 1.15em;
+    }
+}
+
+.navCluster {
+    justify-content: center;
+}
+
+.navPill {
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.chatSlot {
+    flex-shrink: 0;
+}
+
 @media (max-width: breakpoints.$s) {
     .position {
         top: auto;
@@ -17,5 +41,28 @@
     .mask {
         transform: rotate(180deg);
         bottom: 0;
+    }
+
+    .navButton {
+        height: var(--static-space-48);
+        min-height: var(--static-space-48);
+        padding-inline: var(--static-space-16);
+    }
+
+    .navCluster {
+        width: auto;
+        max-width: calc(100vw - var(--static-space-32));
+        justify-content: center;
+        align-items: stretch;
+        gap: var(--static-space-8);
+    }
+
+    .navPill {
+        max-width: calc(100vw - var(--static-space-32) - var(--static-space-56));
+    }
+
+    .chatSlot {
+        display: flex;
+        align-items: stretch;
     }
 }

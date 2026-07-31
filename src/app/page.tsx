@@ -12,9 +12,11 @@ import {
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { ContactForm, GitHubRepos } from "@/components";
+import { HireChatButton } from "@/components/chat/HireChatButton";
 import { Projects } from "@/components/work/Projects";
 import { FeaturedWork } from "@/components/work/FeaturedWork";
 import { Posts } from "@/components/blog/Posts";
+import { HotkeyBound } from "@/components/keyboard/HotkeyBound";
 import { generateSeoMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
@@ -53,17 +55,19 @@ export default function Home() {
               paddingBottom="16"
               paddingLeft="12"
             >
-              <Badge
-                background="brand-alpha-weak"
-                paddingX="12"
-                paddingY="4"
-                onBackground="neutral-strong"
-                textVariant="label-default-s"
-                arrow={false}
-                href={home.featured.href}
-              >
-                <Row paddingY="2">{home.featured.title}</Row>
-              </Badge>
+              <HotkeyBound href={home.featured.href}>
+                <Badge
+                  background="brand-alpha-weak"
+                  paddingX="12"
+                  paddingY="4"
+                  onBackground="neutral-strong"
+                  textVariant="label-default-s"
+                  arrow={false}
+                  href={home.featured.href}
+                >
+                  <Row paddingY="2">{home.featured.title}</Row>
+                </Badge>
+              </HotkeyBound>
             </RevealFx>
           )}
           <RevealFx translateY="4" fillWidth horizontal="center" paddingBottom="8">
@@ -77,27 +81,32 @@ export default function Home() {
             </Text>
           </RevealFx>
           <RevealFx paddingTop="12" delay={0.4} horizontal="center" paddingLeft="12">
-            <Button
-              id="about"
-              data-border="rounded"
-              href={about.path}
-              variant="secondary"
-              size="m"
-              weight="default"
-              arrowIcon
-            >
-              <Row gap="8" vertical="center" paddingRight="4">
-                {about.avatar.display && (
-                  <Avatar
-                    marginRight="8"
-                    style={{ marginLeft: "-0.75rem" }}
-                    src={person.avatar}
-                    size="m"
-                  />
-                )}
-                {about.title}
-              </Row>
-            </Button>
+            <Row gap="12" vertical="center" wrap horizontal="center">
+              <HotkeyBound href={about.path}>
+                <Button
+                  id="about"
+                  data-border="rounded"
+                  href={about.path}
+                  variant="secondary"
+                  size="m"
+                  weight="default"
+                  arrowIcon
+                >
+                  <Row gap="8" vertical="center" paddingRight="4">
+                    {about.avatar.display && (
+                      <Avatar
+                        marginRight="8"
+                        style={{ marginLeft: "-0.75rem" }}
+                        src={person.avatar}
+                        size="m"
+                      />
+                    )}
+                    {about.title}
+                  </Row>
+                </Button>
+              </HotkeyBound>
+              <HireChatButton />
+            </Row>
           </RevealFx>
         </Column>
       </Column>

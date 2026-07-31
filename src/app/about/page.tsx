@@ -14,6 +14,7 @@ import {
 import { baseURL, about, person, social } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
+import { HotkeyBound } from "@/components/keyboard/HotkeyBound";
 import { generateSeoMetadata } from "@/utils/seo";
 import React from "react";
 
@@ -116,31 +117,62 @@ export default function About() {
             paddingTop="s"
             marginBottom="20"
           >
-            {about.calendar.display && (
-              <Row
-                fitWidth
-                border="brand-alpha-medium"
-                background="brand-alpha-weak"
-                radius="full"
-                padding="4"
-                gap="8"
-                marginBottom="m"
-                vertical="center"
-                className={styles.blockAlign}
-                style={{
-                  backdropFilter: "blur(var(--static-space-1))",
-                }}
-              >
-                <Icon paddingLeft="12" name="calendar" onBackground="brand-weak" />
-                <Row paddingX="8">Schedule a call</Row>
-                <IconButton
-                  href={about.calendar.link}
-                  data-border="rounded"
-                  variant="secondary"
-                  icon="chevronRight"
-                />
-              </Row>
-            )}
+            <Row
+              gap="8"
+              wrap
+              marginBottom="m"
+              vertical="center"
+              className={styles.blockAlign}
+            >
+              {about.calendar.display && (
+                <Row
+                  fitWidth
+                  border="brand-alpha-medium"
+                  background="brand-alpha-weak"
+                  radius="full"
+                  padding="4"
+                  gap="8"
+                  vertical="center"
+                  style={{
+                    backdropFilter: "blur(var(--static-space-1))",
+                  }}
+                >
+                  <Icon paddingLeft="12" name="calendar" onBackground="brand-weak" />
+                  <Row paddingX="8">Schedule a call</Row>
+                  <HotkeyBound href={about.calendar.link}>
+                    <IconButton
+                      href={about.calendar.link}
+                      data-border="rounded"
+                      variant="secondary"
+                      icon="chevronRight"
+                    />
+                  </HotkeyBound>
+                </Row>
+              )}
+              <HotkeyBound href="/data/rohitt.pdf">
+                <Row
+                  fitWidth
+                  border="brand-alpha-medium"
+                  background="brand-alpha-weak"
+                  radius="full"
+                  padding="4"
+                  gap="8"
+                  vertical="center"
+                  style={{
+                    backdropFilter: "blur(var(--static-space-1))",
+                  }}
+                >
+                  <Icon paddingLeft="12" name="document" onBackground="brand-weak" />
+                  <Row paddingX="8">Resume</Row>
+                  <IconButton
+                    href="/data/rohitt.pdf"
+                    data-border="rounded"
+                    variant="secondary"
+                    icon="arrowUpRight"
+                  />
+                </Row>
+              </HotkeyBound>
+            </Row>
             <Heading className={styles.textAlign} variant="display-strong-l">
               {person.name}
             </Heading>
@@ -167,10 +199,9 @@ export default function About() {
                       .map(
                   (item) =>
                     item.link && (
-                      <React.Fragment key={item.name}>
+                      <HotkeyBound key={item.name} href={item.link}>
                         <Row s={{ hide: true }}>
                           <Button
-                            key={item.name}
                             href={item.link}
                             prefixIcon={item.icon}
                             label={item.name}
@@ -182,13 +213,12 @@ export default function About() {
                         <Row hide s={{ hide: false }}>
                           <IconButton
                             size="l"
-                            key={`${item.name}-icon`}
                             href={item.link}
                             icon={item.icon}
                             variant="secondary"
                           />
                         </Row>
-                      </React.Fragment>
+                      </HotkeyBound>
                     ),
                 )}
               </Row>

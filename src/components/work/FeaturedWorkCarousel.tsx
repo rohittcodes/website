@@ -2,6 +2,7 @@
 
 import { Column, Heading, IconButton, Media, Row, SmartLink, Text } from "@once-ui-system/core";
 import { useEffect, useRef, useState } from "react";
+import { HotkeyBound } from "../keyboard/HotkeyBound";
 
 interface SlideData {
   slug: string;
@@ -48,37 +49,43 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
             willChange: "transform",
           }}
         >
-          {projects.map((post) => (
-            <SmartLink
+          {projects.map((post, index) => (
+            <HotkeyBound
               key={post.slug}
               href={`/work/${post.slug}`}
-              unstyled
-              style={{
-                position: "relative",
-                display: "block",
-                width: "100%",
-                margin: 0,
-                flexShrink: 0,
-              }}
+              enabled={index === activeIndex}
+              block
             >
-              <Media aspectRatio="16 / 9" sizes="(max-width: 960px) 100vw, 960px" src={post.image} alt={post.title} />
-              <Column
-                position="absolute"
-                bottom="0"
-                left="0"
-                fillWidth
-                gap="4"
-                padding="l"
-                style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65), transparent)" }}
+              <SmartLink
+                href={`/work/${post.slug}`}
+                unstyled
+                style={{
+                  position: "relative",
+                  display: "block",
+                  width: "100%",
+                  margin: 0,
+                  flexShrink: 0,
+                }}
               >
-                <Heading as="h3" variant="heading-strong-l" style={{ color: "white" }}>
-                  {post.title}
-                </Heading>
-                <Text variant="body-default-s" wrap="balance" style={{ color: "rgba(255,255,255,0.85)" }}>
-                  {post.summary}
-                </Text>
-              </Column>
-            </SmartLink>
+                <Media aspectRatio="16 / 9" sizes="(max-width: 960px) 100vw, 960px" src={post.image} alt={post.title} />
+                <Column
+                  position="absolute"
+                  bottom="0"
+                  left="0"
+                  fillWidth
+                  gap="4"
+                  padding="l"
+                  style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65), transparent)" }}
+                >
+                  <Heading as="h3" variant="heading-strong-l" style={{ color: "white" }}>
+                    {post.title}
+                  </Heading>
+                  <Text variant="body-default-s" wrap="balance" style={{ color: "rgba(255,255,255,0.85)" }}>
+                    {post.summary}
+                  </Text>
+                </Column>
+              </SmartLink>
+            </HotkeyBound>
           ))}
         </div>
         {count > 1 && (

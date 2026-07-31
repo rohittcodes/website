@@ -12,8 +12,11 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { ChatWidget, Footer, Header, RouteGuard, Providers } from "@/components";
+import { CommandPalette } from "@/components/keyboard/CommandPalette";
+import { ShortcutsHelp, ShortcutsHint } from "@/components/keyboard/ShortcutsHelp";
 import { Analytics } from "@vercel/analytics/next";
+import { getPaletteItems } from "@/lib/palette.server";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";
 
@@ -32,6 +35,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const paletteItems = getPaletteItems();
+
   return (
     <Flex
       suppressHydrationWarning
@@ -157,14 +162,26 @@ export default async function RootLayout({
               }}
             />
           </RevealFx>
-          <Flex fillWidth minHeight="80" s={{ hide: true }} />
+          <Flex fillWidth s={{ hide: true }} />
           <Header />
-          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
+          <Flex
+            zIndex={0}
+            fillWidth
+            paddingX="l"
+            paddingBottom="l"
+            paddingTop="64"
+            horizontal="center"
+            flex={1}
+          >
             <Flex horizontal="center" fillWidth minHeight="0">
               <RouteGuard>{children}</RouteGuard>
             </Flex>
           </Flex>
           <Footer />
+          <ChatWidget />
+          <CommandPalette items={paletteItems} />
+          <ShortcutsHint />
+          <ShortcutsHelp />
           <Analytics />
         </Column>
       </Providers>

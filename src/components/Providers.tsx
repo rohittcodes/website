@@ -19,6 +19,8 @@ import {
 } from "@once-ui-system/core";
 import { style, dataStyle } from "../resources";
 import { iconLibrary } from "../resources/icons";
+import { ChatUIProvider } from "./chat/ChatUIContext";
+import { KeyboardNavProvider } from "./keyboard/KeyboardNavContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -48,7 +50,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
           }}
         >
           <ToastProvider>
-            <IconProvider icons={iconLibrary}>{children}</IconProvider>
+            <IconProvider icons={iconLibrary}>
+              <ChatUIProvider>
+                <KeyboardNavProvider>{children}</KeyboardNavProvider>
+              </ChatUIProvider>
+            </IconProvider>
           </ToastProvider>
         </DataThemeProvider>
       </ThemeProvider>

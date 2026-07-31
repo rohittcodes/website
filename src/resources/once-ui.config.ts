@@ -22,9 +22,9 @@ const routes: RoutesConfig = {
   "/work": true,
   "/blog": true,
   "/uses": true,
-  "/resume": true,
+  "/resume": false,
   "/now": true,
-  "/gallery": false,
+  "/gallery": true,
 };
 
 const display: DisplayConfig = {
@@ -74,13 +74,13 @@ const fonts: FontsConfig = {
 
 // default customization applied to the HTML in the main layout.tsx
 const style: StyleConfig = {
-  theme: "system", // dark | light | system
-  neutral: "sand", // sand | gray | slate | mint | rose | dusk | custom
-  brand: "aqua", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
+  theme: "dark", // dark | light | system
+  neutral: "slate", // sand | gray | slate | mint | rose | dusk | custom
+  brand: "moss", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
   accent: "moss", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
   solid: "contrast", // color | contrast
   solidStyle: "plastic", // flat | plastic
-  border: "playful", // rounded | playful | conservative | sharp
+  border: "conservative", // rounded | playful | conservative | sharp
   surface: "translucent", // filled | translucent
   transition: "all", // all | micro | macro
   scaling: "90", // 90 | 95 | 100 | 105 | 110

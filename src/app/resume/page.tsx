@@ -28,7 +28,7 @@ export default function Resume() {
           <Row gap="8" className={styles.printButton}>
             <PrintButton />
             <Button
-              href="/rohith-singh-resume.pdf"
+              href="/data/rohitt.pdf"
               variant="secondary"
               size="s"
               prefixIcon="arrowUpRight"

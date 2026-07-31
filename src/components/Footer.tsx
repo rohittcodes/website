@@ -1,5 +1,6 @@
 import { Row, IconButton, Text } from "@once-ui-system/core";
 import { person, social } from "@/resources";
+import { HotkeyBound } from "./keyboard/HotkeyBound";
 import styles from "./Footer.module.scss";
 
 export const Footer = () => {
@@ -28,14 +29,15 @@ export const Footer = () => {
           {social.map(
             (item) =>
               item.link && (
-                <IconButton
-                  key={item.name}
-                  href={item.link}
-                  icon={item.icon}
-                  tooltip={item.name}
-                  size="s"
-                  variant="ghost"
-                />
+                <HotkeyBound key={item.name} href={item.link}>
+                  <IconButton
+                    href={item.link}
+                    icon={item.icon}
+                    tooltip={item.name}
+                    size="s"
+                    variant="ghost"
+                  />
+                </HotkeyBound>
               ),
           )}
         </Row>

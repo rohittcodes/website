@@ -96,7 +96,7 @@ const home: Home = {
         </Text>
       </Row>
     ),
-    href: "https://createxp.com",
+    href: "https://getlinea.app",
   },
   subline: (
     <>

@@ -9,6 +9,7 @@ import {
   SmartLink,
   Text,
 } from "@once-ui-system/core";
+import { HotkeyBound } from "./keyboard/HotkeyBound";
 
 interface ProjectCardProps {
   href: string;
@@ -64,22 +65,26 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
             <Flex gap="24" wrap>
               {content?.trim() && (
-                <SmartLink
-                  suffixIcon="arrowRight"
-                  style={{ margin: "0", width: "fit-content" }}
-                  href={href}
-                >
-                  <Text variant="body-default-s">Read case study</Text>
-                </SmartLink>
+                <HotkeyBound href={href}>
+                  <SmartLink
+                    suffixIcon="arrowRight"
+                    style={{ margin: "0", width: "fit-content" }}
+                    href={href}
+                  >
+                    <Text variant="body-default-s">Read case study</Text>
+                  </SmartLink>
+                </HotkeyBound>
               )}
               {link && (
-                <SmartLink
-                  suffixIcon="arrowUpRightFromSquare"
-                  style={{ margin: "0", width: "fit-content" }}
-                  href={link}
-                >
-                  <Text variant="body-default-s">View project</Text>
-                </SmartLink>
+                <HotkeyBound href={link}>
+                  <SmartLink
+                    suffixIcon="arrowUpRightFromSquare"
+                    style={{ margin: "0", width: "fit-content" }}
+                    href={link}
+                  >
+                    <Text variant="body-default-s">View project</Text>
+                  </SmartLink>
+                </HotkeyBound>
               )}
             </Flex>
           </Column>

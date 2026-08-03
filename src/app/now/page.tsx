@@ -1,11 +1,15 @@
-import { Column, Heading, Text, Row, Tag, Line, SmartLink } from "@once-ui-system/core";
-import { baseURL, person } from "@/resources";
+import { Column, Heading, Text, Row, Schema, Tag, Line, SmartLink } from "@once-ui-system/core";
+import { about, baseURL, person } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
+
+const nowTitle = `Now – ${person.name}`;
+const nowDescription = "What I'm building, learning, and thinking about right now.";
 
 export async function generateMetadata() {
   return generateSeoMetadata({
-    title: `Now – ${person.name}`,
-    description: "What I'm building, learning, and thinking about right now.",
+    title: nowTitle,
+    description: nowDescription,
     baseURL,
     path: "/now",
   });
@@ -55,7 +59,22 @@ Also thinking about where RAG actually breaks down at scale and whether graph-ba
 };
 
 export default function Now() {
+  assertRouteEnabled("/now");
+
   return (
+    <>
+    <Schema
+      as="webPage"
+      baseURL={baseURL}
+      path="/now"
+      title={nowTitle}
+      description={nowDescription}
+      author={{
+        name: person.name,
+        url: `${baseURL}${about.path}`,
+        image: `${baseURL}${person.avatar}`,
+      }}
+    />
     <Column maxWidth="s" paddingTop="16" paddingX="l" gap="xl">
       <Column gap="8">
         <Row fillWidth horizontal="between" vertical="end">
@@ -139,5 +158,6 @@ export default function Now() {
         </Text>
       </Column>
     </Column>
+    </>
   );
 }

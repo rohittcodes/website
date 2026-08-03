@@ -27,6 +27,8 @@ import {
   Line,
 } from "@once-ui-system/core";
 
+import { Mermaid } from "@/components/blog/Mermaid";
+
 type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
   children: ReactNode;
@@ -128,6 +130,12 @@ function createCodeBlock(props: any) {
 
     // Extract language from className (format: language-xxx)
     const language = className.replace("language-", "");
+
+    if (language === "mermaid") {
+      const chart = Array.isArray(children) ? children.join("") : children;
+      return <Mermaid chart={chart} />;
+    }
+
     const label = language.charAt(0).toUpperCase() + language.slice(1);
 
     return (

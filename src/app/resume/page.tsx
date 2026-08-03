@@ -2,6 +2,7 @@ import { Column, Row, Heading, Text, Tag, Line, Button } from "@once-ui-system/c
 import { baseURL, person, about, social } from "@/resources";
 import { PrintButton } from "@/components/resume/PrintButton";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
 import styles from "./resume.module.css";
 import "./print.css";
 
@@ -15,6 +16,8 @@ export async function generateMetadata() {
 }
 
 export default function Resume() {
+  assertRouteEnabled("/resume");
+
   return (
     <Column maxWidth="s" paddingY="24" paddingX="l" gap="xl">
 

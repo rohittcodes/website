@@ -4,7 +4,6 @@ import {
   EffectsConfig,
   FontsConfig,
   MailchimpConfig,
-  ProtectedRoutesConfig,
   RoutesConfig,
   SameAsConfig,
   SchemaConfig,
@@ -32,10 +31,6 @@ const display: DisplayConfig = {
   time: true,
   themeSwitcher: true,
 };
-
-// Enable password protection on selected routes
-// Set password in the .env file, refer to .env.example
-const protectedRoutes: ProtectedRoutesConfig = {};
 
 // Import and set font for each variant
 import { Geist } from "next/font/google";
@@ -220,7 +215,6 @@ export {
   display,
   mailchimp,
   routes,
-  protectedRoutes,
   baseURL,
   fonts,
   style,

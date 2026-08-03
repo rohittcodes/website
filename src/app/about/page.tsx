@@ -16,6 +16,7 @@ import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
 import { HotkeyBound } from "@/components/keyboard/HotkeyBound";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
 import React from "react";
 
 export async function generateMetadata() {
@@ -29,6 +30,8 @@ export async function generateMetadata() {
 }
 
 export default function About() {
+  assertRouteEnabled("/about");
+
   const structure = [
     {
       title: about.intro.title,

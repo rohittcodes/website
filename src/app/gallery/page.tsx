@@ -2,6 +2,7 @@ import { Flex, Schema } from "@once-ui-system/core";
 import GalleryView from "@/components/gallery/GalleryView";
 import { baseURL, gallery, person, routes } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
 
 export async function generateMetadata() {
   return generateSeoMetadata({
@@ -15,6 +16,8 @@ export async function generateMetadata() {
 }
 
 export default function Gallery() {
+  assertRouteEnabled(gallery.path as keyof typeof routes);
+
   return (
     <Flex maxWidth="l">
       <Schema

@@ -3,7 +3,7 @@ import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 import FeaturedPost from "@/components/blog/FeaturedPost";
 import { baseURL, blog, newsletter, person } from "@/resources";
-import { getPosts } from "@/utils/utils";
+import { assertRouteEnabled, getPosts } from "@/utils/utils";
 import { generateSeoMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
@@ -17,6 +17,8 @@ export async function generateMetadata() {
 }
 
 export default function Blog() {
+  assertRouteEnabled("/blog");
+
   const allPosts = getPosts(["src", "app", "blog", "posts"]).sort(
     (a, b) => new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime()
   );

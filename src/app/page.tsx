@@ -18,6 +18,8 @@ import { FeaturedWork } from "@/components/work/FeaturedWork";
 import { Posts } from "@/components/blog/Posts";
 import { HotkeyBound } from "@/components/keyboard/HotkeyBound";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
+import { getPinnedRepos } from "@/lib/github";
 
 export async function generateMetadata() {
   return generateSeoMetadata({
@@ -29,7 +31,11 @@ export async function generateMetadata() {
   });
 }
 
-export default function Home() {
+export default async function Home() {
+  assertRouteEnabled("/");
+
+  const repos = await getPinnedRepos();
+
   return (
     <Column maxWidth="m" gap="l" paddingY="8" horizontal="center">
       <Schema
@@ -157,7 +163,7 @@ export default function Home() {
           </Heading>
           <Line flex={1} />
         </Row>
-        <GitHubRepos />
+        <GitHubRepos repos={repos} />
       </Column>
       <ContactForm marginBottom="m" />
     </Column>

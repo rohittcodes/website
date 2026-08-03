@@ -12,9 +12,8 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { ChatWidget, Footer, Header, RouteGuard, Providers } from "@/components";
-import { CommandPalette } from "@/components/keyboard/CommandPalette";
-import { ShortcutsHelp, ShortcutsHint } from "@/components/keyboard/ShortcutsHelp";
+import { Footer, Header, Providers } from "@/components";
+import { DeferredWidgets } from "@/components/DeferredWidgets";
 import { Analytics } from "@vercel/analytics/next";
 import { getPaletteItems } from "@/lib/palette.server";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
@@ -174,14 +173,11 @@ export default async function RootLayout({
             flex={1}
           >
             <Flex horizontal="center" fillWidth minHeight="0">
-              <RouteGuard>{children}</RouteGuard>
+              {children}
             </Flex>
           </Flex>
           <Footer />
-          <ChatWidget />
-          <CommandPalette items={paletteItems} />
-          <ShortcutsHint />
-          <ShortcutsHelp />
+          <DeferredWidgets paletteItems={paletteItems} />
           <Analytics />
         </Column>
       </Providers>

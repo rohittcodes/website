@@ -15,7 +15,7 @@ import {
 } from "@once-ui-system/core";
 import { baseURL, about, blog, newsletter, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
-import { getPosts } from "@/utils/utils";
+import { assertRouteEnabled, getPosts } from "@/utils/utils";
 import { readingTime } from "@/utils/readingTime";
 import { generateSeoMetadata } from "@/utils/seo";
 import { Metadata } from "next";
@@ -58,6 +58,8 @@ export async function generateMetadata({
 }
 
 export default async function Blog({ params }: { params: Promise<{ slug: string | string[] }> }) {
+  assertRouteEnabled("/blog");
+
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")

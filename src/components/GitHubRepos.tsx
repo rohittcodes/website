@@ -1,28 +1,8 @@
-"use client";
-
 import { Column, Grid, Row, Text, SmartLink } from "@once-ui-system/core";
-import { useEffect, useState } from "react";
 import { HotkeyBound } from "./keyboard/HotkeyBound";
+import type { Repo } from "@/lib/github";
 
-interface Repo {
-  name: string;
-  description: string | null;
-  url: string;
-  stargazerCount: number;
-  forkCount: number;
-  primaryLanguage: { name: string; color: string | null } | null;
-  repositoryTopics: { nodes: { topic: { name: string } }[] };
-}
-
-export function GitHubRepos() {
-  const [repos, setRepos] = useState<Repo[]>([]);
-
-  useEffect(() => {
-    fetch("/api/github/repos")
-      .then((r) => r.json())
-      .then((data) => setRepos(Array.isArray(data) ? data.slice(0, 6) : []));
-  }, []);
-
+export function GitHubRepos({ repos }: { repos: Repo[] }) {
   if (repos.length === 0) return null;
 
   return (

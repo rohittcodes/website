@@ -1,12 +1,16 @@
-import { Column, Grid, Heading, Line, Row, Tag, Text } from "@once-ui-system/core";
-import { baseURL, person } from "@/resources";
+import { Column, Grid, Heading, Line, Row, Schema, Tag, Text } from "@once-ui-system/core";
+import { about, baseURL, person } from "@/resources";
 import { IconName } from "@/resources/icons";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
+
+const usesTitle = `Setup – ${person.name}`;
+const usesDescription = "The tools, hardware, and software that get me through the day.";
 
 export async function generateMetadata() {
   return generateSeoMetadata({
-    title: `Setup – ${person.name}`,
-    description: "The tools, hardware, and software that get me through the day.",
+    title: usesTitle,
+    description: usesDescription,
     baseURL,
     path: "/uses",
   });
@@ -157,7 +161,22 @@ const sections: { title: string; items: UseItem[] }[] = [
 ];
 
 export default function Uses() {
+  assertRouteEnabled("/uses");
+
   return (
+    <>
+    <Schema
+      as="webPage"
+      baseURL={baseURL}
+      path="/uses"
+      title={usesTitle}
+      description={usesDescription}
+      author={{
+        name: person.name,
+        url: `${baseURL}${about.path}`,
+        image: `${baseURL}${person.avatar}`,
+      }}
+    />
     <Column maxWidth="m" paddingTop="16">
       <Column paddingX="l" marginBottom="l" gap="8">
         <Heading variant="display-strong-s">Setup</Heading>
@@ -206,5 +225,6 @@ export default function Uses() {
         ))}
       </Column>
     </Column>
+    </>
   );
 }

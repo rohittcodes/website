@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPosts } from "@/utils/utils";
+import { assertRouteEnabled, getPosts } from "@/utils/utils";
 import {
   Schema,
   AvatarGroup,
@@ -60,6 +60,8 @@ export default async function Project({
 }: {
   params: Promise<{ slug: string | string[] }>;
 }) {
+  assertRouteEnabled("/work");
+
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")

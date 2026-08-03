@@ -2,6 +2,7 @@ import { Column, Heading, Schema } from "@once-ui-system/core";
 import { baseURL, about, person, work } from "@/resources";
 import { Projects } from "@/components/work/Projects";
 import { generateSeoMetadata } from "@/utils/seo";
+import { assertRouteEnabled } from "@/utils/utils";
 
 export async function generateMetadata() {
   return generateSeoMetadata({
@@ -14,6 +15,8 @@ export async function generateMetadata() {
 }
 
 export default function Work() {
+  assertRouteEnabled("/work");
+
   return (
     <Column maxWidth="m" paddingTop="16">
       <Schema

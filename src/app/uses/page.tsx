@@ -5,7 +5,8 @@ import { generateSeoMetadata } from "@/utils/seo";
 import { assertRouteEnabled } from "@/utils/utils";
 
 const usesTitle = `Setup – ${person.name}`;
-const usesDescription = "The tools, hardware, and software that get me through the day.";
+const usesDescription =
+  "The editor, terminal, stack, AI tools, and hardware I actually use day to day — a living list, updated as my setup changes.";
 
 export async function generateMetadata() {
   return generateSeoMetadata({

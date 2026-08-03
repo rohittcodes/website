@@ -4,7 +4,8 @@ import { generateSeoMetadata } from "@/utils/seo";
 import { assertRouteEnabled } from "@/utils/utils";
 
 const nowTitle = `Now – ${person.name}`;
-const nowDescription = "What I'm building, learning, and thinking about right now.";
+const nowDescription =
+  "A running log of what I'm building, learning, and reading right now, updated periodically.";
 
 export async function generateMetadata() {
   return generateSeoMetadata({

@@ -109,7 +109,7 @@ const about: About = {
   path: "/about",
   label: "About",
   title: `About – ${person.name}`,
-  description: `I'm ${person.name}, a ${person.role} based in ${person.location}. I build things, ship them, and figure out the rest along the way.`,
+  description: `I'm ${person.name}, a ${person.role} based in Hyderabad, India. I build things, ship them, and figure out the rest along the way.`,
   tableOfContent: {
     display: true,
     subItems: false,
@@ -253,7 +253,7 @@ const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
   title: `Photo gallery – ${person.name}`,
-  description: "A photo collection of mine.",
+  description: "A personal photo collection outside of code — updated occasionally.",
   // Images by https://lorant.one
   // These are placeholder images, replace with your own
   images: [

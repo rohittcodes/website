@@ -1,4 +1,5 @@
-import { Flex, Schema } from "@once-ui-system/core";
+import { Flex } from "@once-ui-system/core";
+import { Schema } from "@/components";
 import GalleryView from "@/components/gallery/GalleryView";
 import { baseURL, gallery, person, routes } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";

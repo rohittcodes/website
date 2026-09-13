@@ -97,4 +97,4 @@ Building in feedback visibility from the start, even just a thumbs up/down, give
 
 RAG in production is not a hard engineering problem. It's a *systems* problem of latency, caching, observability, and feedback loops, wrapped around what looks like a simple search feature.
 
-The demo took an afternoon. The production version took three weeks. Both were worth it.
+The three weeks went into caching, an index tuned for the actual query pattern, and logging that told me which fix was working and which wasn't. None of that shows up in a 60-line notebook version, and all of it turned out to be the actual job.

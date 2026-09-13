@@ -8,9 +8,9 @@ import {
   Media,
   Tag,
   Text,
-  Schema,
   Row,
 } from "@once-ui-system/core";
+import { Schema, JsonLd } from "@/components";
 import { baseURL, about, person, social } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
@@ -67,6 +67,29 @@ export default function About() {
           name: person.name,
           url: `${baseURL}${about.path}`,
           image: `${baseURL}${person.avatar}`,
+        }}
+      />
+      <JsonLd
+        id="schema-person"
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: person.name,
+          url: `${baseURL}${about.path}`,
+          image: `${baseURL}${person.avatar}`,
+          jobTitle: person.role,
+          description: about.description,
+          sameAs: social
+            .filter((item) => item.essential && item.link && !item.link.startsWith("mailto:"))
+            .map((item) => item.link),
+          worksFor: about.work.experiences[0]
+            ? { "@type": "Organization", name: about.work.experiences[0].company }
+            : undefined,
+          alumniOf: about.studies.institutions.map((institution) => ({
+            "@type": "CollegeOrUniversity",
+            name: institution.name,
+          })),
+          knowsAbout: about.technical.skills.map((skill) => skill.title),
         }}
       />
       {about.tableOfContent.display && (

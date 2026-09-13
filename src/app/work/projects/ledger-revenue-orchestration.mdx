@@ -12,37 +12,27 @@ team:
     linkedIn: "https://www.linkedin.com/in/rohittcodes"
 ---
 
-## The Problem
+## Why invoicing breaks down past a couple of clients
 
-Independent workers and small teams spend a disproportionate amount of time chasing invoices, switching between billing tools, and manually reconciling payments across clients. Cash flow visibility is reactive, not predictive.
+Freelancers don't lose time on any single invoice. They lose it re-running the same reconciliation by hand across every client: which invoice is paid, which method it came in on, which one is quietly overdue, and whether anyone actually followed up. None of that's visible until you're doing it for five clients across three different billing tools at once, and cash flow visibility stays reactive instead of something you can plan around.
 
-## What I Built
+## What I built
 
-Ledger is a centralized revenue management platform that automates the financial lifecycle end to end. It handles invoicing, tracks payment status autonomously, forecasts revenue, and sends reminders without manual intervention.
+Ledger centralizes that lifecycle, invoicing, payment tracking, forecasting, and reminders, so none of it depends on someone remembering to check a spreadsheet.
 
-## Core Features
+- **Multi-workspace billing.** Each client gets its own workspace, invoice history, payment terms, and compliance state, rolled into one view instead of one browser tab per client.
+- **Forecasting.** Payment history per client feeds a cash flow forecast and flags a client trending toward overdue before the invoice is actually late.
+- **Reminders that don't need a human.** A due-date nudge, then escalating follow-ups, then a final notice, all triggered off real payment status.
+- **Compliance per region.** Tax rules and invoice validity get checked before an invoice goes out, not after it bounces back.
 
-**Multi-Workspace Billing**
-Architects a clean separation between client workspaces, each with its own invoice history, payment terms, and compliance state, while surfacing a unified view across all of them.
+## The part that's actually hard
 
-**Predictive Revenue Forecasting**
-Analyzes historical payment patterns per client to forecast expected cash flow. Surfaces anomalies (clients trending toward overdue) before they become a problem.
-
-**Autonomous Reminder Workflows**
-Integrated automated reminder sequences triggered by payment status: initial due-date nudge, escalating follow-ups, final notice. No manual tracking required.
-
-**Real-Time Compliance Tracking**
-Tracks tax compliance state and invoice validity rules per region, flagging issues before invoices are sent.
-
-**Payments Integration**
-Integrated Razorpay for global payment acceptance, supporting UPI, cards, net banking, and international methods with webhook-based status reconciliation.
+None of the above is the hard part. The hard part is Razorpay: reconciling payment status across UPI, cards, net banking, and international methods, each with its own webhook shape and its own way of arriving late, out of order, or twice, without ever marking an invoice paid when it isn't, or the reverse.
 
 ## Stack
 
 Next.js · TypeScript · PostgreSQL · Prisma · Razorpay · tRPC · Vercel
 
-## Impact
+## What changed
 
-- Reduced overdue invoices through automated follow-up logic
-- Gave freelancers a single source of truth for all revenue across clients
-- Eliminated context-switching between spreadsheets, email, and payment dashboards
+Overdue invoices dropped once the follow-up sequence stopped depending on someone remembering to send it. More importantly, revenue across every client now lives in one place instead of split across spreadsheets, email threads, and whatever the payment dashboard happens to show that day.

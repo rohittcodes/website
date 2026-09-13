@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import { assertRouteEnabled, getPosts } from "@/utils/utils";
 import {
-  Schema,
   AvatarGroup,
   Button,
-  Carousel,
   Column,
   Flex,
   Heading,
@@ -16,7 +14,8 @@ import {
 } from "@once-ui-system/core";
 import { baseURL, about, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
-import { ScrollToHash, CustomMDX } from "@/components";
+import { ScrollToHash, CustomMDX, Schema } from "@/components";
+import { WorkCarousel } from "@/components/work/WorkCarousel";
 import { generateSeoMetadata } from "@/utils/seo";
 import { Metadata } from "next";
 import { Projects } from "@/components/work/Projects";
@@ -124,10 +123,11 @@ export default async function Project({
         </Row>
       </Row>
       {post.metadata.images?.length > 0 && (
-        <Carousel
+        <WorkCarousel
+          priority
           sizes="(max-width: 960px) 100vw, 960px"
           items={post.metadata.images.map((src: string) => ({
-            slide: src,
+            src,
             alt: post.metadata.title,
           }))}
         />

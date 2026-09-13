@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
-import { CustomMDX, Mailchimp, ScrollToHash } from "@/components";
+import { CustomMDX, Mailchimp, ScrollToHash, Schema } from "@/components";
 import {
-  Schema,
   Column,
   Heading,
   HeadingNav,
@@ -16,6 +15,7 @@ import {
 import { baseURL, about, blog, newsletter, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { assertRouteEnabled, getPosts } from "@/utils/utils";
+import { getOgImage } from "@/utils/og";
 import { readingTime } from "@/utils/readingTime";
 import { generateSeoMetadata } from "@/utils/seo";
 import { Metadata } from "next";
@@ -52,7 +52,7 @@ export async function generateMetadata({
     type: "article",
     publishedTime: post.metadata.publishedAt,
     author: { name: person.name, url: `${baseURL}${about.path}` },
-    image: post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`,
+    image: post.metadata.image || getOgImage(post.metadata.title, post.metadata.tag),
     path: `${blog.path}/${post.slug}`,
   });
 }
@@ -89,10 +89,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             description={post.metadata.summary}
             datePublished={post.metadata.publishedAt}
             dateModified={post.metadata.publishedAt}
-            image={
-              post.metadata.image ||
-              `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`
-            }
+            image={post.metadata.image || getOgImage(post.metadata.title, post.metadata.tag)}
             author={{
               name: person.name,
               url: `${baseURL}${about.path}`,

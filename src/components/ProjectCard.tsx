@@ -2,7 +2,6 @@
 
 import {
   AvatarGroup,
-  Carousel,
   Column,
   Flex,
   Heading,
@@ -10,6 +9,7 @@ import {
   Text,
 } from "@once-ui-system/core";
 import { HotkeyBound } from "./keyboard/HotkeyBound";
+import { WorkCarousel } from "./work/WorkCarousel";
 
 interface ProjectCardProps {
   href: string;
@@ -24,6 +24,7 @@ interface ProjectCardProps {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   href,
+  priority = false,
   images = [],
   title,
   content,
@@ -33,10 +34,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   return (
     <Column fillWidth gap="m">
-      <Carousel
+      <WorkCarousel
+        priority={priority}
         sizes="(max-width: 960px) 100vw, 960px"
         items={images.map((image) => ({
-          slide: image,
+          src: image,
           alt: title,
         }))}
       />

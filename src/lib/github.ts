@@ -12,78 +12,101 @@ export interface Repo {
   repositoryTopics: { nodes: { topic: { name: string } }[] };
 }
 
-const PINNED_QUERY = `
-  query {
-    user(login: "${GITHUB_USERNAME}") {
-      pinnedItems(first: 6, types: REPOSITORY) {
-        nodes {
-          ... on Repository {
-            name
-            description
-            url
-            stargazerCount
-            forkCount
-            primaryLanguage {
-              name
-              color
-            }
-            repositoryTopics(first: 4) {
-              nodes {
-                topic { name }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+const FEATURED_REPOS: {
+  owner?: string;
+  name: string;
+  description: string;
+  language: string;
+}[] = [
+  {
+    owner: "linea-org",
+    name: "linea",
+    description:
+      "Visual AI workflow engine — compose, run, and debug agent pipelines on a canvas.",
+    language: "TypeScript",
+  },
+  {
+    name: "codepilot",
+    description:
+      "Rust multi-agent CLI that routes Linear, GitHub, and Supabase work through MCP.",
+    language: "Rust",
+  },
+  {
+    name: "rocketbase",
+    description:
+      "High-performance time series database in Rust, organized around DataCrates.",
+    language: "Rust",
+  },
+  {
+    name: "tracer",
+    description:
+      "Reasoning-focused observability — collect logs and traces without a full APM stack.",
+    language: "TypeScript",
+  },
+  {
+    name: "neon-osskit",
+    description:
+      "CLI that scaffolds a Next.js SaaS starter with Neon, Clerk, and Prisma or Drizzle.",
+    language: "TypeScript",
+  },
+  {
+    name: "solana-tx-landing",
+    description:
+      "Claude Code skill for landing Solana transactions: fees, ALTs, Jito, and blockhash expiry.",
+    language: "Shell",
+  },
+];
+
+function repoOwner(featured: (typeof FEATURED_REPOS)[number]) {
+  return featured.owner ?? GITHUB_USERNAME;
+}
+
+function fallbackRepo(featured: (typeof FEATURED_REPOS)[number]): Repo {
+  const owner = repoOwner(featured);
+  return {
+    name: featured.name,
+    description: featured.description,
+    url: `https://github.com/${owner}/${featured.name}`,
+    stargazerCount: 0,
+    forkCount: 0,
+    primaryLanguage: { name: featured.language, color: null },
+    repositoryTopics: { nodes: [] },
+  };
+}
 
 export async function getPinnedRepos(): Promise<Repo[]> {
-  try {
-    if (process.env.GITHUB_TOKEN) {
-      const res = await fetch("https://api.github.com/graphql", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: PINNED_QUERY }),
-        next: { revalidate: 3600 },
-      });
+  const headers: HeadersInit = process.env.GITHUB_TOKEN
+    ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+    : {};
 
-      if (res.ok) {
-        const { data } = await res.json();
-        const repos = data?.user?.pinnedItems?.nodes ?? [];
-        return repos;
+  return Promise.all(
+    FEATURED_REPOS.map(async (featured) => {
+      const fallback = fallbackRepo(featured);
+
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${repoOwner(featured)}/${featured.name}`,
+          { headers, next: { revalidate: 3600 } },
+        );
+
+        if (!res.ok) return fallback;
+
+        const repo = await res.json();
+        return {
+          name: featured.name,
+          description: featured.description,
+          url: repo.html_url ?? fallback.url,
+          stargazerCount: repo.stargazers_count ?? 0,
+          forkCount: repo.forks_count ?? 0,
+          primaryLanguage: {
+            name: repo.language ?? featured.language,
+            color: null,
+          },
+          repositoryTopics: { nodes: [] },
+        };
+      } catch {
+        return fallback;
       }
-    }
-
-    // Fallback: public REST API (no token needed) — surface the most substantial
-    // repos (most stars, excluding forks) rather than just recently touched ones.
-    const res = await fetch(
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&type=owner`,
-      { next: { revalidate: 3600 } },
-    );
-
-    if (!res.ok) return [];
-
-    const repos = await res.json();
-    const ranked = repos
-      .filter((r: any) => !r.fork)
-      .sort((a: any, b: any) => b.stargazers_count - a.stargazers_count)
-      .slice(0, 6);
-
-    return ranked.map((r: any) => ({
-      name: r.name,
-      description: r.description,
-      url: r.html_url,
-      stargazerCount: r.stargazers_count,
-      forkCount: r.forks_count,
-      primaryLanguage: r.language ? { name: r.language, color: null } : null,
-      repositoryTopics: { nodes: [] },
-    }));
-  } catch {
-    return [];
-  }
+    }),
+  );
 }

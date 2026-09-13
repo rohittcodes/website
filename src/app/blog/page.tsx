@@ -1,5 +1,5 @@
-import { Column, Heading, Line, Row, Schema, Text } from "@once-ui-system/core";
-import { Mailchimp } from "@/components";
+import { Column, Heading, Line, Row, Text } from "@once-ui-system/core";
+import { Mailchimp, Schema } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 import FeaturedPost from "@/components/blog/FeaturedPost";
 import { baseURL, blog, newsletter, person } from "@/resources";
@@ -27,7 +27,7 @@ export default function Blog() {
   return (
     <Column maxWidth="m" paddingTop="16">
       <Schema
-        as="blogPosting"
+        as="webPage"
         baseURL={baseURL}
         title={blog.title}
         description={blog.description}

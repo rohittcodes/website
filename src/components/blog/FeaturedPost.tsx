@@ -1,5 +1,6 @@
 import { Column, Heading, Media, Row, SmartLink, Text } from "@once-ui-system/core";
 import { formatDate } from "@/utils/formatDate";
+import { getOgImage } from "@/utils/og";
 import { HotkeyBound } from "../keyboard/HotkeyBound";
 
 interface FeaturedPostProps {
@@ -7,8 +8,7 @@ interface FeaturedPostProps {
 }
 
 export default function FeaturedPost({ post }: FeaturedPostProps) {
-  const image =
-    post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`;
+  const image = post.metadata.image || getOgImage(post.metadata.title, post.metadata.tag);
 
   return (
     <HotkeyBound href={`/blog/${post.slug}`} block>

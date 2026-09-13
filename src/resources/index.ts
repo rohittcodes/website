@@ -2,6 +2,7 @@
 export {
   person,
   social,
+  contra,
   newsletter,
   home,
   about,

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { routes } from "@/resources";
+import { contra, routes } from "@/resources";
 import { getPosts } from "@/utils/utils";
 import type { PaletteItem } from "./palette";
 
@@ -26,9 +26,9 @@ export function getPaletteItems(): PaletteItem[] {
     {
       id: "action-hire",
       title: "Work together",
-      subtitle: "Start a collaboration chat",
+      subtitle: "Hire on Contra",
       group: "Actions",
-      action: "hire",
+      href: contra.url,
     },
     {
       id: "action-resume",

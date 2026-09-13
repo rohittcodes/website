@@ -12,12 +12,13 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, Providers } from "@/components";
+import { Footer, Header, Providers, Schema } from "@/components";
 import { DeferredWidgets } from "@/components/DeferredWidgets";
 import { Analytics } from "@vercel/analytics/next";
 import { getPaletteItems } from "@/lib/palette.server";
-import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+import { baseURL, effects, fonts, style, dataStyle, home, person, social } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";
+import styles from "./layout.module.scss";
 
 export async function generateMetadata() {
   return generateSeoMetadata({
@@ -119,6 +120,22 @@ export default async function RootLayout({
           padding="0"
           horizontal="center"
         >
+          <Schema
+            as="website"
+            baseURL={baseURL}
+            path="/"
+            title={home.title}
+            description={home.description}
+            image={home.image}
+            sameAs={social
+              .filter((item) => item.essential && !item.link.startsWith("mailto:"))
+              .map((item) => item.link)}
+            author={{
+              name: person.name,
+              url: `${baseURL}/about`,
+              image: `${baseURL}${person.avatar}`,
+            }}
+          />
           <RevealFx fill position="absolute">
             <Background
               mask={{
@@ -164,6 +181,7 @@ export default async function RootLayout({
           <Flex fillWidth s={{ hide: true }} />
           <Header />
           <Flex
+            className={styles.content}
             zIndex={0}
             fillWidth
             paddingX="l"

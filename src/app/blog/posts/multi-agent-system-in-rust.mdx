@@ -6,7 +6,7 @@ tag: "AI"
 image: "/images/blog/ai-agents-rust.png"
 ---
 
-Everyone's building AI agents these days, and everyone's teaching you how to do it in Python or JavaScript. Nothing wrong with **Python**. It's fast to prototype with and has a mature ecosystem. But I wanted to try something different. What if we could build a **multi-agent system** that orchestrates different specialised agents, each connected to real-world tools via MCP (Model Context Protocol), and what if we built it in **Rust**?
+Most multi-agent tutorials floating around are Python, for good reason, the ecosystem's mature and prototyping is fast. I wanted to find out what building one in Rust would actually cost me: whether the type system and async model would help once several specialised agents, each wired to real-world tools over MCP (Model Context Protocol), started juggling requests across services, or whether I'd just be fighting the borrow checker for no benefit.
 
 That's exactly why I built **Codepilot**, a multi-agent system that can handle Linear project management, GitHub repository operations, and Supabase tasks, all through a terminal UI.
 
@@ -24,11 +24,7 @@ A **multi-agent system** solves this by having specialized agents that can colla
 
 ### And why Rust?
 
-Rust isn't the usual go-to for AI, but it has some clear benefits:
-
-- **Performance**: zero-cost abstractions and memory safety mean your agent runs fast without eating resources.
-- **Type safety**: errors can be caught at compile time, not when your agent's halfway through a task.
-- **Ecosystem potential**: although the AI ecosystem is more mature in Python, Rust's async/await model and strict typing make it a good fit for agents juggling multiple tools, APIs, or tasks.
+Rust isn't the usual go-to for AI, but the case for it is straightforward. Zero-cost abstractions and memory safety mean the agent runs fast without eating resources, and a lot of the errors that would otherwise surface halfway through a task get caught at compile time instead. The ecosystem is thinner than Python's, but the async/await model and strict typing held up well once agents started juggling multiple tools and APIs at the same time.
 
 ## What is an AI agent, anyway?
 

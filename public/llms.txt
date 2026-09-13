@@ -1,0 +1,35 @@
+# Rohith Singh
+
+> AI-native full-stack engineer building AI-powered SaaS products, RAG pipelines, and production web systems. Based in Hyderabad, India.
+
+Portfolio and technical blog at https://rohitt.codes. Case studies and write-ups on shipping AI features, RAG retrieval, agent orchestration, and full-stack SaaS products, documented with real numbers and failure modes, not just what worked.
+
+## About
+
+- [About](https://rohitt.codes/about): Background, work history, education, and technical skills.
+- [Now](https://rohitt.codes/now): What I'm currently building, learning, and reading.
+- [Uses](https://rohitt.codes/uses): Editor, stack, AI tools, and hardware.
+
+## Projects
+
+- [Linea](https://rohitt.codes/work/linea-ai-workflow-orchestration): AI workflow orchestration platform, a visual canvas for composing AI workflows backed by a reliable execution engine and TypeScript SDK.
+- [Ledger](https://rohitt.codes/work/ledger-revenue-orchestration): AI-native revenue orchestration platform automating invoicing, forecasting, and payment tracking for independent workers.
+- [NovaBench](https://rohitt.codes/work/novabench-ai-recommendation-engine): Conversational AI recommendation engine using RAG over benchmark data instead of keyword search, sub-200ms end to end.
+- [3DLabs](https://rohitt.codes/work/3dlabs-autonomous-ai-video-pipeline): Autonomous AI video pipeline turning a topic into a finished documentary-style video in roughly 8 minutes.
+- [Live Race](https://rohitt.codes/work/live-race-realtime-map): Real-time friend-racing mobile app built in Expo, with battery-efficient live location updates.
+- [jumble[cash]](https://rohitt.codes/work/jumblecash-onchain-arcade): On-chain arcade with AI-led games and production-grade Solana transaction handling.
+
+## Blog
+
+- [Your AI Agent Needs an Operating System](https://rohitt.codes/blog/your-ai-agent-needs-an-operating-system): Routing agent work across business domains without a giant prompt or a workflow that dies halfway through.
+- [I kept hitting the same Solana bugs, so I turned them into a Claude Code skill](https://rohitt.codes/blog/solana-tx-landing-claude-skill): Stale blockhashes, guessed compute units, and unbounded fee escalation, solved and packaged as a reusable skill.
+- [The Missing Layer Between You and Your AI Agent](https://rohitt.codes/blog/agentic-dev-environment-with-warp): Running multiple CLI coding agents in parallel without four terminal windows and constant context-switching.
+- [Can You Build AI Agents in Rust? Yep, and Here's How I Did It](https://rohitt.codes/blog/multi-agent-system-in-rust): A multi-agent system orchestrating Linear, GitHub, and Supabase through MCP, built in Rust.
+- [What I learned building a sub-200ms RAG pipeline in production](https://rohitt.codes/blog/building-a-sub-200ms-rag-pipeline): Intent extraction, caching, and index tuning that took a RAG pipeline from ~1.1s to under 200ms.
+- [Building Linea: what I learned designing a visual AI workflow engine](https://rohitt.codes/blog/building-linea-visual-ai-workflows): Making agent orchestration, state, and data flow visible instead of hiding them behind abstractions.
+- [Neon OSS Kit: Ship Your Next.js Apps Faster Than Ever](https://rohitt.codes/blog/neon-oss-starter-kit): A CLI that scaffolds production-ready Next.js SaaS starters with Neon, Clerk, and Prisma or Drizzle.
+
+## Optional
+
+- [RSS feed](https://rohitt.codes/api/rss)
+- [Sitemap](https://rohitt.codes/sitemap.xml)

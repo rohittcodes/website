@@ -11,36 +11,22 @@ team:
     linkedIn: "https://www.linkedin.com/in/rohittcodes"
 ---
 
-## The Problem
+## What it is
 
-Single-turn LLM chats can't handle complex, multi-step business logic. Most enterprise "AI integrations" end up as opaque wrappers: hard to debug, impossible to modify, and completely invisible to the people who need to trust them.
+Linea is a canvas for building AI workflows: connect an LLM call, a retrieval step, a tool call like Stripe or Slack, wire them together, and watch data move between them instead of debugging a prompt chain you can't see inside. It's live at [getlinea.app](https://getlinea.app), still growing.
 
-There was no good tool for visually designing, testing, and deploying autonomous agent systems without writing infrastructure from scratch.
+## The hard part wasn't the AI
 
-## What I Built
+The LLM calls are commodity. The actual engineering sits underneath, in a state machine that tracks every node through idle, running, streaming, and complete or error, because a streaming LLM node isn't "running" and then "done", it's emitting tokens the whole time, and whatever's downstream needs to know whether a given token is a partial result to buffer or something it can act on immediately.
 
-Linea is a low-code/no-code environment where you architect AI workflows by connecting nodes. Each node is a discrete unit: an LLM call, a vector retrieval step, a tool invocation (Stripe, Slack, Google Search). You wire them together visually, backed by a reliable execution engine and a TypeScript SDK for embedding workflows in other products.
+That state also has to stay fast. Early on, streaming token state lived in React state, and the canvas re-rendered thirty-plus times a second during generation, stuttering visibly on anything longer than a couple of nodes. Moving that state into a ref-based store that components subscribe to directly, bypassing React's render cycle entirely, fixed it: the canvas now only re-renders on structural changes, like a node's status or an edge being added, never on individual tokens.
 
-## Technical Highlights
-
-**Node-Based Orchestration**
-Built on React Flow and TypeScript. The canvas renders in real time as you build, propagating data contracts automatically so you catch mismatches before running anything.
-
-**Agentic Memory**
-Integrated a RAG pipeline using pgvector and FastAPI. Agents maintain long-term context across multi-step tasks by retrieving relevant memory chunks at each node execution.
-
-**State Machine for Streaming**
-Wrote a custom state machine to manage streaming LLM responses mid-workflow. Tool-use execution, where the model calls an API and waits for a result, is handled as a first-class state transition, keeping the UX smooth at sub-200ms response latency.
-
-**Scalable Architecture**
-Fully containerized with Docker. Stateless execution nodes scale horizontally; the state machine layer handles concurrency without workflow logic breakdown.
+Memory across a multi-step workflow follows the same logic. Each node declares an explicit dependency on another node's output, wired as an edge on the graph, so the execution engine only ever passes a step what it actually needs, no implicit global context. pgvector backs long-term retrieval underneath that, but the graph-level wiring is what keeps the whole thing debuggable instead of another pile of state nobody can see.
 
 ## Stack
 
 Next.js · NestJS · LangGraph.js · PostgreSQL · pgvector · Redis · BullMQ · Clerk
 
-## Result
+## Where it stands
 
-- Reduced time to deploy custom business agents by ~70%
-- Made agent logic auditable and editable by non-engineers
-- Eliminated the "black box" problem: every decision in the pipeline is a visible, inspectable node
+Deploying a custom agent went from weeks of bespoke integration work to something closer to wiring a diagram together, roughly 70% faster to get one live, and inspectable by whoever needs to trust it, not just whoever wrote the prompt. More on how the execution engine works in [Building Linea](/blog/building-linea-visual-ai-workflows).

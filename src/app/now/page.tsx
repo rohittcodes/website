@@ -1,4 +1,5 @@
-import { Column, Heading, Text, Row, Schema, Tag, Line, SmartLink } from "@once-ui-system/core";
+import { Column, Heading, Text, Row, Tag, Line, SmartLink } from "@once-ui-system/core";
+import { Schema } from "@/components";
 import { about, baseURL, person } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";
 import { assertRouteEnabled } from "@/utils/utils";

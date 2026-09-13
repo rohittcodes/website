@@ -1,6 +1,8 @@
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import React, { ReactNode } from "react";
+import remarkGfm from "remark-gfm";
 import { slugify as transliterate } from "transliteration";
+import tableStyles from "./MarkdownTable.module.scss";
 
 import {
   Heading,
@@ -119,6 +121,26 @@ function createParagraph({ children }: TextProps) {
   );
 }
 
+function MarkdownTable({ children }: { children?: ReactNode }) {
+  return (
+    <div className={tableStyles.wrap}>
+      <table className={tableStyles.table}>{children}</table>
+    </div>
+  );
+}
+
+function MarkdownRow({ children }: { children?: ReactNode }) {
+  return <tr className={tableStyles.row}>{children}</tr>;
+}
+
+function MarkdownHeaderCell({ children }: { children?: ReactNode }) {
+  return <th className={tableStyles.head}>{children}</th>;
+}
+
+function MarkdownCell({ children }: { children?: ReactNode }) {
+  return <td className={tableStyles.cell}>{children}</td>;
+}
+
 function createInlineCode({ children }: { children: ReactNode }) {
   return <InlineCode>{children}</InlineCode>;
 }
@@ -137,19 +159,24 @@ function createCodeBlock(props: any) {
     }
 
     const label = language.charAt(0).toUpperCase() + language.slice(1);
+    const code = (Array.isArray(children) ? children.join("") : String(children ?? "")).replace(
+      /\n$/,
+      "",
+    );
 
     return (
       <CodeBlock
+        compact
         marginTop="8"
         marginBottom="16"
         codes={[
           {
-            code: children,
+            code,
             language,
             label,
           },
         ]}
-        copyButton={true}
+        copyButton
       />
     );
   }
@@ -194,6 +221,12 @@ const components = {
   ul: createList("ul") as any,
   li: createListItem as any,
   hr: createHR as any,
+  table: MarkdownTable as any,
+  thead: ({ children }: { children?: ReactNode }) => <thead>{children}</thead>,
+  tbody: ({ children }: { children?: ReactNode }) => <tbody>{children}</tbody>,
+  tr: MarkdownRow as any,
+  th: MarkdownHeaderCell as any,
+  td: MarkdownCell as any,
   Heading,
   Text,
   CodeBlock,
@@ -217,5 +250,20 @@ type CustomMDXProps = MDXRemoteProps & {
 };
 
 export function CustomMDX(props: CustomMDXProps) {
-  return <MDXRemote options={{ blockJS: false }} {...props} components={{ ...components, ...(props.components || {}) }} />;
+  const { components: extraComponents, options, ...rest } = props;
+
+  return (
+    <MDXRemote
+      {...rest}
+      options={{
+        ...options,
+        blockJS: false,
+        mdxOptions: {
+          ...options?.mdxOptions,
+          remarkPlugins: [remarkGfm, ...(options?.mdxOptions?.remarkPlugins ?? [])],
+        },
+      }}
+      components={{ ...components, ...extraComponents }}
+    />
+  );
 }

@@ -1,4 +1,5 @@
-import { Column, Heading, Schema } from "@once-ui-system/core";
+import { Column, Heading } from "@once-ui-system/core";
+import { Schema } from "@/components";
 import { baseURL, about, person, work } from "@/resources";
 import { Projects } from "@/components/work/Projects";
 import { generateSeoMetadata } from "@/utils/seo";
@@ -35,7 +36,7 @@ export default function Work() {
       <Heading marginBottom="m" variant="heading-strong-l" marginLeft="24">
         {work.title}
       </Heading>
-      <Projects />
+      <Projects priority />
     </Column>
   );
 }

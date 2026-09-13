@@ -1,0 +1,57 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--static-space-24);
+  background: color-mix(in srgb, var(--static-black) 58%, transparent);
+  animation: fade-in 0.2s ease both;
+}
+
+.card {
+  width: var(--diagram-width, min(40rem, calc(100vw - 2rem)));
+  padding: var(--static-space-16);
+  border: 1px solid var(--neutral-alpha-weak);
+  border-radius: var(--radius-l);
+  background: var(--page-background);
+  cursor: zoom-in;
+  touch-action: none;
+  transform-origin: center center;
+  transition: transform 0.22s ease;
+  will-change: transform;
+  user-select: none;
+}
+
+.card[data-dragging="true"] {
+  transition: none;
+}
+
+.card[data-zoomed="true"] {
+  cursor: zoom-out;
+}
+
+.card[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.content {
+  max-width: 100%;
+
+  :global(svg) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

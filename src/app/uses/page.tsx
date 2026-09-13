@@ -1,4 +1,5 @@
-import { Column, Grid, Heading, Line, Row, Schema, Tag, Text } from "@once-ui-system/core";
+import { Column, Grid, Heading, Line, Row, Tag, Text } from "@once-ui-system/core";
+import { Schema } from "@/components";
 import { about, baseURL, person } from "@/resources";
 import { IconName } from "@/resources/icons";
 import { generateSeoMetadata } from "@/utils/seo";

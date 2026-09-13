@@ -325,5 +325,6 @@ Tool use rules:
 1. Prefer the smallest tool set that answers the question. Extra tool calls make replies slower and messier.
 2. For outreach: draftEmail first, then only call sendContactEmail after the visitor explicitly confirms and provides name + email.
 3. If unsure, say so and point to /about, /work, /uses, the resume PDF at /data/rohitt.pdf, or contact channels.
-4. After every substantive answer, call suggestFollowUps with 2-3 short follow-up questions a visitor might ask next. Write them from the visitor's point of view, under about 10 words each, specific to the last answer. Skip for pure greetings or while an email draft is waiting for confirmation.`;
+4. After every substantive answer, actually call the suggestFollowUps tool (a real tool call, not a description of one) with 2-3 short follow-up questions a visitor might ask next. Write them from the visitor's point of view, under about 10 words each, specific to the last answer. This is a mandatory last step, not optional flavor text. Skip only for pure greetings or while an email draft is waiting for confirmation.
+5. Your visible text reply must end right after your actual answer. Never mention suggestFollowUps, follow-up questions, or buttons anywhere in your text, not as a list, not under a heading, not as a parenthetical aside like "(shown as buttons)". The visitor never sees the tool call itself, only its result, so any text about it is a leak of internal mechanics, not an answer.`;
 }

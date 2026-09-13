@@ -1,0 +1,30 @@
+---
+title: "Live Race: Real-time Friend Racing"
+publishedAt: "2026-09-13"
+summary: "A client mobile app where friends race live on a map. Built in Expo, with location updates that stay live without wrecking battery life."
+images:
+  - "/images/projects/live-race/cover-01.avif"
+  - "/images/projects/live-race/cover-02.avif"
+link: "https://contra.com/community/PAXZFVdW-built-this-for-a-client-basically"
+team:
+  - name: "Rohith Singh"
+    role: "Full Stack + Mobile Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/rohittcodes"
+---
+
+## The brief
+
+A client wanted something in the Strava family, except the race happens live. You and your friends are on the same map at the same time, not comparing a recording after the fact.
+
+I can't share the product name or much of the internals. The screens are fair game.
+
+## What was actually hard
+
+The first cut looked fine and felt broken. Live location for a group of people is easy to do in a way that murders the battery and still feels a second behind.
+
+A few Expo-side tweaks cleaned up the render path. The real work was the update loop: frequent enough that the race feels live, quiet enough that the phone doesn't get hot halfway through.
+
+## What shipped
+
+React Native and Expo. Live map, live racers, a UI that doesn't make you hunt for where everyone is. The rest stays with the client.

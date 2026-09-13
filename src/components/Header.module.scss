@@ -26,10 +26,23 @@
 .navPill {
     flex-shrink: 1;
     min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .chatSlot {
     flex-shrink: 0;
+}
+
+@media (max-width: breakpoints.$m) {
+    .navCluster {
+        justify-content: center;
+        max-width: calc(100vw - var(--static-space-32));
+    }
+
+    .navButton {
+        padding-inline: var(--static-space-8);
+    }
 }
 
 @media (max-width: breakpoints.$s) {

@@ -5,9 +5,12 @@ import { ProjectCard } from "@/components";
 interface ProjectsProps {
   range?: [number, number?];
   exclude?: string[];
+  // Only true when this listing is the top of the page (e.g. /work) — a
+  // range further down a page, or a "more work" section, is below the fold.
+  priority?: boolean;
 }
 
-export function Projects({ range, exclude }: ProjectsProps) {
+export function Projects({ range, exclude, priority = false }: ProjectsProps) {
   let allProjects = getPosts(["src", "app", "work", "projects"]);
 
   // Exclude by slug (exact match)
@@ -27,7 +30,7 @@ export function Projects({ range, exclude }: ProjectsProps) {
     <Column fillWidth gap="l" marginBottom="16" paddingX="l">
       {displayedProjects.map((post, index) => (
         <ProjectCard
-          priority={index < 2}
+          priority={priority && index < 2}
           key={post.slug}
           href={`/work/${post.slug}`}
           images={post.metadata.images}

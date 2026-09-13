@@ -67,7 +67,26 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
                   flexShrink: 0,
                 }}
               >
-                <Media aspectRatio="16 / 9" sizes="(max-width: 960px) 100vw, 960px" src={post.image} alt={post.title} />
+                <Media
+                  aspectRatio="16 / 9"
+                  sizes="(max-width: 960px) 100vw, 960px"
+                  src={post.image}
+                  alt={post.title}
+                  // The first slide is what's actually visible on first paint
+                  // (this carousel is the home page's real LCP candidate).
+                  priority={index === 0}
+                />
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    inset: "auto 0 0 0",
+                    height: "62%",
+                    pointerEvents: "none",
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)",
+                  }}
+                />
                 <Column
                   position="absolute"
                   bottom="0"
@@ -75,12 +94,19 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
                   fillWidth
                   gap="4"
                   padding="l"
-                  style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65), transparent)" }}
                 >
-                  <Heading as="h3" variant="heading-strong-l" style={{ color: "white" }}>
+                  <Heading
+                    as="h3"
+                    variant="heading-strong-l"
+                    style={{ color: "white" }}
+                  >
                     {post.title}
                   </Heading>
-                  <Text variant="body-default-s" wrap="balance" style={{ color: "rgba(255,255,255,0.85)" }}>
+                  <Text
+                    variant="body-default-s"
+                    wrap="balance"
+                    style={{ color: "rgba(255,255,255,0.88)" }}
+                  >
                     {post.summary}
                   </Text>
                 </Column>
@@ -89,15 +115,48 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
           ))}
         </div>
         {count > 1 && (
-          <Row position="absolute" top="16" right="16" gap="8" zIndex={1}>
-            <Row radius="m" background="surface">
-              <IconButton
-                onClick={() => setIsPlaying((p) => !p)}
-                variant="secondary"
-                icon={isPlaying ? "pause" : "play"}
-              />
+          <>
+            <Row
+              position="absolute"
+              left="16"
+              zIndex={1}
+              style={{ top: "50%", transform: "translateY(-50%)" }}
+            >
+              <Row radius="m" background="surface">
+                <IconButton
+                  onClick={() => goTo(activeIndex - 1)}
+                  variant="secondary"
+                  icon="chevronLeft"
+                  aria-label="Previous project"
+                />
+              </Row>
             </Row>
-          </Row>
+            <Row
+              position="absolute"
+              right="16"
+              zIndex={1}
+              style={{ top: "50%", transform: "translateY(-50%)" }}
+            >
+              <Row radius="m" background="surface">
+                <IconButton
+                  onClick={() => goTo(activeIndex + 1)}
+                  variant="secondary"
+                  icon="chevronRight"
+                  aria-label="Next project"
+                />
+              </Row>
+            </Row>
+            <Row position="absolute" top="16" right="16" gap="8" zIndex={1}>
+              <Row radius="m" background="surface">
+                <IconButton
+                  onClick={() => setIsPlaying((p) => !p)}
+                  variant="secondary"
+                  icon={isPlaying ? "pause" : "play"}
+                  aria-label={isPlaying ? "Pause carousel" : "Play carousel"}
+                />
+              </Row>
+            </Row>
+          </>
         )}
       </div>
       {count > 1 && (

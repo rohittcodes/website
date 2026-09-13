@@ -83,6 +83,4 @@ This pattern, separating "fast" streaming state from "slow" structural state, en
 
 The interesting thing about building Linea is that the value isn't in the AI part. The LLM calls are commodity. The value is in making the non-AI parts (orchestration, state, data flow, observability) visible and manageable.
 
-Most agent frameworks treat those parts as implementation details. Linea treats them as the product.
-
-That's the bet. I think it's the right one.
+Most agent frameworks bury orchestration, state, and data flow as implementation detail, then seem surprised when nobody trusts what the agent did. Linea puts them on the canvas instead. Whether that's the right long-term bet, I honestly don't know yet. What I do know is I can point at any node in a failed run and tell you exactly what it saw, which is more than I could ever say about that first 400-line script.

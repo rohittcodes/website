@@ -1,0 +1,46 @@
+.wrap {
+  width: 100%;
+  margin-top: var(--static-space-8);
+  margin-bottom: var(--static-space-16);
+  overflow-x: auto;
+  border: 1px solid var(--neutral-alpha-weak);
+  border-radius: var(--radius-l);
+  background: var(--page-background);
+}
+
+.table {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.head {
+  text-align: left;
+  padding: var(--static-space-12) var(--static-space-16);
+  border-bottom: 1px solid var(--neutral-alpha-weak);
+  color: var(--neutral-on-background-strong);
+  font-family: var(--font-label), var(--font-body), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.cell {
+  padding: var(--static-space-12) var(--static-space-16);
+  color: var(--neutral-on-background-medium);
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  vertical-align: top;
+
+  :global(*) {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+.row + .row .cell {
+  border-top: 1px solid var(--neutral-alpha-weak);
+}

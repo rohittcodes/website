@@ -1,7 +1,7 @@
 "use client";
 
-import { Background, Button, Column, Heading, Input, Text, Textarea, opacity, SpacingToken } from "@once-ui-system/core";
-import { mailchimp } from "@/resources";
+import { Background, Button, Column, Heading, Input, SmartLink, Text, Textarea, opacity, SpacingToken } from "@once-ui-system/core";
+import { contra, mailchimp } from "@/resources";
 import { useState } from "react";
 
 export const ContactForm: React.FC<React.ComponentProps<typeof Column>> = ({ ...flex }) => {
@@ -156,6 +156,10 @@ export const ContactForm: React.FC<React.ComponentProps<typeof Column>> = ({ ...
                 {error}
               </Text>
             )}
+            <Text variant="body-default-s" onBackground="neutral-weak" align="center">
+              Or <SmartLink href={contra.url}>hire me through Contra</SmartLink> if you prefer
+              escrow.
+            </Text>
           </Column>
         </form>
       )}

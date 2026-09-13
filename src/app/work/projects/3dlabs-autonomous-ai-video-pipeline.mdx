@@ -11,34 +11,28 @@ team:
     linkedIn: "https://www.linkedin.com/in/rohittcodes"
 ---
 
-## The Problem
+## The idea
 
-Creating documentary-style videos traditionally requires significant team resources and multi-day timelines. The challenge was compressing the entire production workflow into something a single person could run in minutes, without producing generic-quality AI output.
+A documentary-style video normally means a team and a timeline measured in days. 3DLabs collapses that into one pipeline: a topic goes in, a finished video comes out roughly eight minutes later, with nobody touching anything in between.
 
-## What I Built
+## Why that's harder than "call some AI models"
 
-3DLabs is an end-to-end system that transforms a topic into a finished, production-ready documentary video in roughly 8 minutes. The pipeline runs through ten sequential stages: script generation, scene planning, image creation, animation, voice narration, sound design, and multi-format export, coordinating over a dozen AI models through a unified orchestration layer.
+Calling an image model, a video model, and a voice model individually is the easy part. The pipeline chains script generation, scene planning, image generation, animation, narration, and sound design into one sequence, and every stage depends on what the last one produced. Making that chain hold together, instead of drifting or breaking silently three stages in, was most of the actual work.
 
-## Technical Highlights
+## How it's built
 
-**Visual Coherence**
-Managed prompts and seeds across multiple generation calls to maintain consistent imagery throughout the video. The hard part wasn't calling AI models, it was making the pipeline hold together.
+**Staying visually coherent.** The same characters and settings have to survive dozens of separate generation calls without visibly changing halfway through. That meant managing prompts and seeds across the whole run as one continuous state, not per-call.
 
-**Model Orchestration**
-Built a unified routing layer across Gemini, Replicate (Flux, Seedance, LTX, Minimax), and ElevenLabs, abstracting each provider's quirks behind a single interface.
+**Routing around providers, not to them.** Gemini, Replicate (Flux, Seedance, LTX, Minimax), and ElevenLabs each sit behind one interface, so a stage's model can be swapped without touching anything upstream or downstream of it.
 
-**Cost Management**
-Implemented a pre-flight credit reservation system to prevent runaway inference expenses across long, multi-stage generation runs.
+**Knowing the cost before spending it.** A pre-flight credit check confirms a run can actually afford to finish before generation starts, instead of finding out four stages in that it can't.
 
-**Multi-Tenancy**
-Production-ready authentication and workspace isolation via Clerk, so multiple users can run pipelines concurrently without cross-contamination.
+**Keeping runs from bleeding into each other.** Clerk-backed auth and workspace isolation so concurrent runs from different users never share state.
 
 ## Stack
 
 Next.js · TypeScript · Google Gemini · Replicate · ElevenLabs · FFmpeg
 
-## Result
+## Where it landed
 
-- Finished, production-ready videos in ~8 minutes from a single topic input
-- Eliminated days of manual production work per video
-- Coordinated a dozen+ AI models through one orchestration layer without manual glue work
+A topic in, a finished video out, about eight minutes later, coordinated across a dozen-plus models with no manual stitching between stages. The days of production work that would normally sit between those two points just don't happen anymore.

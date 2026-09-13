@@ -84,7 +84,7 @@ export const Header = () => {
           fillWidth
           vertical="center"
           textVariant="body-default-s"
-          s={{ hide: true }}
+          m={{ hide: true }}
         >
           {display.location && <Row>{person.location}</Row>}
         </Row>
@@ -108,7 +108,7 @@ export const Header = () => {
             <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
               {routes["/"] && (
                 <>
-                  <Row s={{ hide: true }}>
+                  <Row m={{ hide: true }}>
                     {withHotkey(
                       "/",
                       <ToggleButton
@@ -119,7 +119,7 @@ export const Header = () => {
                       />,
                     )}
                   </Row>
-                  <Row hide s={{ hide: false }}>
+                  <Row hide m={{ hide: false }}>
                     {withHotkey(
                       "/",
                       <ToggleButton
@@ -136,7 +136,7 @@ export const Header = () => {
               <Line background="neutral-alpha-medium" vert maxHeight="32" />
               {routes["/about"] && (
                 <>
-                  <Row s={{ hide: true }}>
+                  <Row m={{ hide: true }}>
                     {withHotkey(
                       "/about",
                       <ToggleButton
@@ -148,7 +148,7 @@ export const Header = () => {
                       />,
                     )}
                   </Row>
-                  <Row hide s={{ hide: false }}>
+                  <Row hide m={{ hide: false }}>
                     {withHotkey(
                       "/about",
                       <ToggleButton
@@ -164,7 +164,7 @@ export const Header = () => {
               )}
               {routes["/work"] && (
                 <>
-                  <Row s={{ hide: true }}>
+                  <Row m={{ hide: true }}>
                     {withHotkey(
                       "/work",
                       <ToggleButton
@@ -176,7 +176,7 @@ export const Header = () => {
                       />,
                     )}
                   </Row>
-                  <Row hide s={{ hide: false }}>
+                  <Row hide m={{ hide: false }}>
                     {withHotkey(
                       "/work",
                       <ToggleButton
@@ -192,7 +192,7 @@ export const Header = () => {
               )}
               {routes["/blog"] && (
                 <>
-                  <Row s={{ hide: true }}>
+                  <Row m={{ hide: true }}>
                     {withHotkey(
                       "/blog",
                       <ToggleButton
@@ -204,7 +204,7 @@ export const Header = () => {
                       />,
                     )}
                   </Row>
-                  <Row hide s={{ hide: false }}>
+                  <Row hide m={{ hide: false }}>
                     {withHotkey(
                       "/blog",
                       <ToggleButton
@@ -220,7 +220,7 @@ export const Header = () => {
               )}
               {routes["/uses"] && (
                 <>
-                  <Row s={{ hide: true }}>
+                  <Row m={{ hide: true }}>
                     {withHotkey(
                       "/uses",
                       <ToggleButton
@@ -232,7 +232,7 @@ export const Header = () => {
                       />,
                     )}
                   </Row>
-                  <Row hide s={{ hide: false }}>
+                  <Row hide m={{ hide: false }}>
                     {withHotkey(
                       "/uses",
                       <ToggleButton
@@ -249,10 +249,10 @@ export const Header = () => {
               {display.themeSwitcher && (
                 <>
                   <Line background="neutral-alpha-medium" vert maxHeight="32" />
-                  <Row s={{ hide: true }}>
+                  <Row m={{ hide: true }}>
                     <ThemeToggle className={styles.navButton} />
                   </Row>
-                  <Row hide s={{ hide: false }}>
+                  <Row hide m={{ hide: false }}>
                     <ThemeToggle className={styles.navButton} size="l" />
                   </Row>
                 </>
@@ -263,7 +263,7 @@ export const Header = () => {
             <MobileChatTrigger />
           </Row>
         </Row>
-        <Flex fillWidth horizontal="end" vertical="center" s={{ hide: true }}>
+        <Flex fillWidth horizontal="end" vertical="center" m={{ hide: true }}>
           <Flex
             paddingRight="12"
             horizontal="end"

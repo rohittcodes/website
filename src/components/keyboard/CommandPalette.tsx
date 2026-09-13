@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "@once-ui-system/core";
 import { useChatUI } from "../chat/ChatUIContext";
-import { HIRE_PROMPT } from "../chat/prompts";
 import { filterPaletteItems, type PaletteItem } from "@/lib/palette";
 import { useKeyboardNav } from "./KeyboardNavContext";
 import styles from "./CommandPalette.module.scss";
@@ -14,7 +13,7 @@ const GROUP_ORDER: PaletteItem["group"][] = ["Actions", "Pages", "Work", "Blog"]
 export function CommandPalette({ items }: { items: PaletteItem[] }) {
   const router = useRouter();
   const { paletteVisible, setPaletteVisible } = useKeyboardNav();
-  const { openChat, openChatWithPrompt } = useChatUI();
+  const { openChat } = useChatUI();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -50,11 +49,11 @@ export function CommandPalette({ items }: { items: PaletteItem[] }) {
       openChat();
       return;
     }
-    if (item.action === "hire") {
-      openChatWithPrompt(HIRE_PROMPT);
-      return;
-    }
     if (item.href) {
+      if (/^https?:\/\//i.test(item.href)) {
+        window.open(item.href, "_blank", "noopener,noreferrer");
+        return;
+      }
       router.push(item.href);
     }
   };

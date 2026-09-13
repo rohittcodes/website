@@ -3,17 +3,18 @@
 import { Card, Column, Media, Row, Text } from "@once-ui-system/core";
 import { formatDate } from "@/utils/formatDate";
 import { readingTime } from "@/utils/readingTime";
+import { getOgImage } from "@/utils/og";
 import { HotkeyBound } from "../keyboard/HotkeyBound";
 
 interface PostProps {
   post: any;
   thumbnail: boolean;
   direction?: "row" | "column";
+  priority?: boolean;
 }
 
-export default function Post({ post, thumbnail, direction }: PostProps) {
-  const image =
-    post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`;
+export default function Post({ post, thumbnail, direction, priority = false }: PostProps) {
+  const image = post.metadata.image || getOgImage(post.metadata.title, post.metadata.tag);
 
   return (
     <HotkeyBound href={`/blog/${post.slug}`} block>
@@ -33,7 +34,7 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
       >
         {thumbnail && (
           <Media
-            priority
+            priority={priority}
             sizes="(max-width: 768px) 100vw, 640px"
             border="neutral-alpha-weak"
             cursor="interactive"
@@ -61,7 +62,16 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
                 </Text>
               </Row>
             )}
-            <Text variant="heading-strong-m" wrap="balance">
+            <Text
+              variant="heading-strong-m"
+              wrap="balance"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
               {post.metadata.title}
             </Text>
             {post.metadata.summary && (

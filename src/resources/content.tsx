@@ -65,6 +65,11 @@ const social: Social = [
     essential: true,
   },
   {
+    name: "Contra",
+    icon: "contra",
+    link: "https://contra.com/rohittcodes",
+  },
+  {
     name: "Email",
     icon: "email",
     link: `mailto:${person.email}`,
@@ -72,12 +77,19 @@ const social: Social = [
   },
 ];
 
+const contra = {
+  username: "rohittcodes",
+  url: "https://contra.com/rohittcodes",
+  analyticsUserId: "00ddd8f3-86cd-4ad2-9cf8-86a9249a0358",
+  rating: "5.0",
+} as const;
+
 const home: Home = {
   path: "/",
-  image: `/api/og/generate?title=${encodeURIComponent("Rohith Singh: Full Stack + AI Engineer")}`,
+  image: `/api/og/generate?title=${encodeURIComponent("Rohith Singh: AI-Native Full-Stack Engineer")}`,
   label: "Home",
-  title: `${person.name}'s Portfolio`,
-  description: "I build full-stack and AI-native products that actually ship, not just demo well. Here's the proof.",
+  title: `${person.name} — AI-Native Full-Stack Engineer`,
+  description: "I'm an AI-native full-stack engineer building RAG pipelines and AI-powered SaaS products that actually ship, not just demo well. Here's the proof.",
   headline: (
     <>
       Building <HeadlineChip src="/images/projects/linea/cover-01.avif" alt="Linea" />{" "}
@@ -89,18 +101,18 @@ const home: Home = {
     display: true,
     title: (
       <Row gap="12" vertical="center">
-        <strong className="ml-4">Linea Labs</strong>{" "}
+        <strong className="ml-4">★ {contra.rating} on Contra</strong>{" "}
         <Line background="brand-alpha-strong" vert height="20" />
         <Text marginRight="4" onBackground="brand-medium">
-          Currently building
+          Open to contract work
         </Text>
       </Row>
     ),
-    href: "https://getlinea.app",
+    href: contra.url,
   },
   subline: (
     <>
-      I build full-stack and AI-native products, obsess over backend architecture, and ship side projects to learn in public.
+      I build full-stack and AI-native products, obsess over backend architecture, and ship systems that hold up past the demo.
     </>
   ),
 };
@@ -108,8 +120,8 @@ const home: Home = {
 const about: About = {
   path: "/about",
   label: "About",
-  title: `About – ${person.name}`,
-  description: `I'm ${person.name}, a ${person.role} based in Hyderabad, India. I build things, ship them, and figure out the rest along the way.`,
+  title: `About ${person.name} — AI-Native Full-Stack Engineer`,
+  description: `I'm ${person.name}, an AI-native full-stack engineer based in Hyderabad, India. I build AI-powered SaaS products and RAG pipelines, ship them, and figure out the rest along the way.`,
   tableOfContent: {
     display: true,
     subItems: false,
@@ -126,10 +138,10 @@ const about: About = {
     title: "Introduction",
     description: (
       <>
-        Software engineer based in Hyderabad, India. Interested in backend architecture, AI
-        infrastructure, startups, and product development. I spend most of my time building things
-        sometimes they ship, sometimes they teach me something better. Either way, I share what I
-        learn along the way.
+        AI-native full-stack engineer based in Hyderabad, India. Interested in backend architecture,
+        AI infrastructure, and building SaaS products people actually use. I spend most of my time
+        building things, sometimes they ship, sometimes they teach me something better. Either way, I
+        share what I learn along the way.
       </>
     ),
   },
@@ -143,8 +155,8 @@ const about: About = {
         role: "Software Engineer",
         achievements: [
           <Fragment key="createxp">
-            Returned to createxp to continue building and scaling product features after a stint at
-            Grit Labs.
+            Back on the RAG recommendation engine, this time pushing retrieval quality: re-ranking,
+            hybrid sparse/dense search, and shaving latency wherever the profiler points.
           </Fragment>,
         ],
         images: [],
@@ -155,8 +167,7 @@ const about: About = {
         role: "Software Engineer",
         achievements: [
           <Fragment key="grit">
-            Worked on full-stack engineering challenges, contributing to product development and
-            internal tooling at Grit Labs.
+            A short stint between two createxp runs, full-stack feature work and internal tooling.
           </Fragment>,
         ],
         images: [],
@@ -167,8 +178,8 @@ const about: About = {
         role: "Software Engineer",
         achievements: [
           <Fragment key="createxp-initial">
-            Joined createxp as a software engineer, contributing to product development across the
-            full stack.
+            First stint at createxp: shipped the initial version of the laptop recommendation engine
+            that became NovaBench, RAG over a benchmark catalog instead of keyword search.
           </Fragment>,
         ],
         images: [],
@@ -219,7 +230,7 @@ const about: About = {
       {
         title: "Backend & Infrastructure",
         description: (
-          <>Designing scalable backend systems, working with databases, queues, and cloud infra. Interested in distributed systems and performance at scale.</>
+          <>Designing scalable backend systems for SaaS products: databases, queues, and cloud infra. Interested in distributed systems and performance at scale.</>
         ),
         tags: [
           { name: "PostgreSQL", icon: "postgresql" },
@@ -234,8 +245,8 @@ const about: About = {
 const blog: Blog = {
   path: "/blog",
   label: "Blog",
-  title: "Blog – AI, engineering & building in public",
-  description: "What I'm building, breaking, and figuring out in public. No filter.",
+  title: "AI Engineering & SaaS Blog | Rohith Singh",
+  description: "RAG pipelines, AI agents, and AI-powered SaaS products, documented as I build them. No filter.",
   // Create new blog posts by adding a new .mdx file to app/blog/posts
   // All posts will be listed on the /blog route
 };
@@ -243,8 +254,8 @@ const blog: Blog = {
 const work: Work = {
   path: "/work",
   label: "Work",
-  title: `Projects – ${person.name}`,
-  description: "AI systems, full-stack products, and Web3 infra I've actually shipped, not just prototyped.",
+  title: `AI & SaaS Projects | ${person.name}`,
+  description: "AI-powered SaaS products, RAG pipelines, and full-stack systems I've actually shipped, not just prototyped.",
   // Create new project pages by adding a new .mdx file to app/blog/posts
   // All projects will be listed on the /home and /work routes
 };
@@ -307,4 +318,4 @@ const uses = {
   description: "The tools, hardware, and software I use day to day.",
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, uses };
+export { person, social, contra, newsletter, home, about, blog, work, gallery, uses };

@@ -7,6 +7,7 @@ const ALLOWED_PATHS = [
   "/work",
   "/blog",
   "/uses",
+  "/resume",
   "/now",
 ] as const;
 
@@ -26,7 +27,7 @@ export function getAboutKnowledge() {
     email: person.email,
     calendar: about.calendar.display ? about.calendar.link : null,
     intro:
-      "Software engineer based in Hyderabad, India. Interested in backend architecture, AI infrastructure, startups, and product development. Builds things, ships them, and shares what he learns.",
+      "AI-native full-stack engineer in Hyderabad, India. Backend architecture, AI infrastructure, and products people use. Full Stack Developer at createxp (NovaBench RAG) and founder of Linea Labs. Open to full-time roles.",
     experience: about.work.experiences.map((exp) => ({
       company: exp.company,
       role: exp.role,
@@ -34,10 +35,7 @@ export function getAboutKnowledge() {
     })),
     education: about.studies.institutions.map((inst) => ({
       name: inst.name,
-      detail:
-        inst.name.includes("KMIT")
-          ? "Bachelor of Technology in Computer Science (2023-2026)"
-          : "Diploma in Computer Science (2020-2023)",
+      detail: typeof inst.description === "string" ? inst.description : "",
     })),
     skills: about.technical.skills.map((skill) => ({
       title: skill.title,
@@ -265,6 +263,10 @@ export function getPageContext(pathname: string) {
     return { type: "uses", path, label: "Uses" };
   }
 
+  if (path === "/resume") {
+    return { type: "resume", path, label: "Resume" };
+  }
+
   if (path === "/now") {
     return { type: "now", path, label: "Now" };
   }
@@ -324,7 +326,7 @@ Voice and tone (how Rohith actually talks, adapted for chat):
 Tool use rules:
 1. Prefer the smallest tool set that answers the question. Extra tool calls make replies slower and messier.
 2. For outreach: draftEmail first, then only call sendContactEmail after the visitor explicitly confirms and provides name + email.
-3. If unsure, say so and point to /about, /work, /uses, the resume PDF at /data/rohitt.pdf, or contact channels.
+3. If unsure, say so and point to /about, /work, /resume, /uses, or contact channels.
 4. After every substantive answer, actually call the suggestFollowUps tool (a real tool call, not a description of one) with 2-3 short follow-up questions a visitor might ask next. Write them from the visitor's point of view, under about 10 words each, specific to the last answer. This is a mandatory last step, not optional flavor text. Skip only for pure greetings or while an email draft is waiting for confirmation.
 5. Your visible text reply must end right after your actual answer. Never mention suggestFollowUps, follow-up questions, or buttons anywhere in your text, not as a list, not under a heading, not as a parenthetical aside like "(shown as buttons)". The visitor never sees the tool call itself, only its result, so any text about it is a leak of internal mechanics, not an answer.`;
 }

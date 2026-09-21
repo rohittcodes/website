@@ -1,7 +1,7 @@
 "use client";
 
 import { newsletter, mailchimp } from "@/resources";
-import { Button, Column, Heading, Input, Row, Text, Background } from "@once-ui-system/core";
+import { Button, Column, Heading, Input, Text, Background } from "@once-ui-system/core";
 import { opacity, SpacingToken } from "@once-ui-system/core";
 import { useState } from "react";
 
@@ -118,21 +118,19 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
       ) : (
         <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <Column fillWidth maxWidth="xs" gap="8">
-            <Row fillWidth gap="8" vertical="center">
-              <Input
-                id="newsletter-email"
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (error) setError("");
-                }}
-              />
-              <Button type="submit" size="m" loading={loading}>
-                Subscribe
-              </Button>
-            </Row>
+            <Input
+              id="newsletter-email"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (error) setError("");
+              }}
+            />
+            <Button type="submit" size="m" fillWidth loading={loading}>
+              Subscribe
+            </Button>
             {error && (
               <Text variant="body-default-xs" onBackground="danger-weak" paddingLeft="4">
                 {error}

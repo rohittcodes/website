@@ -10,17 +10,21 @@ import styles from "./ChatWidget.module.scss";
 export function MobileChatTrigger() {
   const { open, setOpen } = useChatUI();
 
+  if (open) return null;
+
   return (
-    <HotkeyTarget label={CHAT_HOTKEY.key} fill>
-      <button
-        type="button"
-        className={`${styles.mobileTrigger} ${open ? styles.mobileTriggerActive : ""}`}
-        onClick={() => setOpen(!open)}
-        aria-label={open ? "Close chat" : "Open chat with Rohith"}
-        aria-expanded={open}
-      >
-        <Avatar src={person.avatar} size="l" />
-      </button>
-    </HotkeyTarget>
+    <div className={styles.mobileFab}>
+      <HotkeyTarget label={CHAT_HOTKEY.key} fill>
+        <button
+          type="button"
+          className={styles.mobileTrigger}
+          onClick={() => setOpen(true)}
+          aria-label="Open chat with Rohith"
+          aria-expanded={false}
+        >
+          <Avatar src={person.avatar} size="l" />
+        </button>
+      </HotkeyTarget>
+    </div>
   );
 }

@@ -18,7 +18,7 @@ import {
   HiXMark,
   HiOutlineEye,
   HiOutlineEyeSlash,
-  HiOutlineDocument,
+  HiOutlineDocumentText,
   HiOutlineGlobeAsiaAustralia,
   HiOutlineRocketLaunch,
 } from "react-icons/hi2";
@@ -30,6 +30,8 @@ import {
   PiBookBookmarkDuotone,
   PiImageDuotone,
   PiToolboxDuotone,
+  PiMoonDuotone,
+  PiSunDuotone,
 } from "react-icons/pi";
 
 import {
@@ -85,6 +87,8 @@ export const iconLibrary: Record<string, IconType> = {
   home: PiHouseDuotone,
   gallery: PiImageDuotone,
   toolbox: PiToolboxDuotone,
+  light: PiSunDuotone,
+  dark: PiMoonDuotone,
   discord: FaDiscord,
   eye: HiOutlineEye,
   eyeOff: HiOutlineEyeSlash,
@@ -94,7 +98,7 @@ export const iconLibrary: Record<string, IconType> = {
   twitter: FaXTwitter,
   threads: FaThreads,
   arrowUpRightFromSquare: HiArrowTopRightOnSquare,
-  document: HiOutlineDocument,
+  document: HiOutlineDocumentText,
   rocket: HiOutlineRocketLaunch,
   javascript: SiJavascript,
   nextjs: SiNextdotjs,

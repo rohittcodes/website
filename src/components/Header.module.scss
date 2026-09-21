@@ -30,9 +30,6 @@
     overflow: hidden;
 }
 
-.chatSlot {
-    flex-shrink: 0;
-}
 
 @media (max-width: breakpoints.$m) {
     .navCluster {
@@ -46,16 +43,6 @@
 }
 
 @media (max-width: breakpoints.$s) {
-    .position {
-        top: auto;
-        bottom: var(--static-space-24);
-    }
-
-    .mask {
-        transform: rotate(180deg);
-        bottom: 0;
-    }
-
     .navButton {
         height: var(--static-space-48);
         min-height: var(--static-space-48);
@@ -71,11 +58,6 @@
     }
 
     .navPill {
-        max-width: calc(100vw - var(--static-space-32) - var(--static-space-56));
-    }
-
-    .chatSlot {
-        display: flex;
-        align-items: stretch;
+        max-width: calc(100vw - var(--static-space-32));
     }
 }

@@ -1,39 +1,16 @@
 import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
-import { Line, Row, Text } from "@once-ui-system/core";
+import { Row, Text } from "@once-ui-system/core";
 import { Fragment } from "react/jsx-runtime";
-
-function HeadlineChip({ src, alt }: { src: string; alt: string }) {
-  return (
-    <span
-      style={{
-        display: "inline-flex",
-        verticalAlign: "middle",
-        margin: "0 0.1em",
-        height: "0.8em",
-        width: "1.3em",
-        overflow: "hidden",
-        borderRadius: "0.25em",
-        border: "2px solid var(--page-background)",
-      }}
-    >
-      <img
-        src={src}
-        alt={alt}
-        style={{ height: "100%", width: "100%", objectFit: "cover" }}
-      />
-    </span>
-  );
-}
 
 const person: Person = {
   firstName: "Rohith",
   lastName: "Singh",
   name: "Rohith Singh",
-  role: "Full Stack + AI Engineer",
+  role: "AI / Full-Stack Engineer",
   avatar: "/images/avatar.jpg",
   email: "rohittcodes@gmail.com",
   location: "Asia/Kolkata", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "German (Deutsch)", "Hindi", "Telugu"], // optional: Leave the array empty if you don't want to display languages
+  languages: ["English", "Japanese (日本語)", "Hindi", "Telugu"], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter: Newsletter = {
@@ -86,42 +63,31 @@ const contra = {
 
 const home: Home = {
   path: "/",
-  image: `/api/og/generate?title=${encodeURIComponent("Rohith Singh: AI-Native Full-Stack Engineer")}`,
+  image: `/api/og/generate?title=${encodeURIComponent("Rohith Singh: AI / Full-Stack Engineer")}`,
   label: "Home",
-  title: `${person.name} — AI-Native Full-Stack Engineer`,
-  description: "I'm an AI-native full-stack engineer building RAG pipelines and AI-powered SaaS products that actually ship, not just demo well. Here's the proof.",
-  headline: (
-    <>
-      Building <HeadlineChip src="/images/projects/linea/cover-01.avif" alt="Linea" />{" "}
-      AI-native software <HeadlineChip src="/images/projects/novabench/cover-01.avif" alt="NovaBench" />{" "}
-      that ships and scales
-    </>
-  ),
+  title: "Rohith Singh | AI / Full-Stack Engineer | Open to full-time",
+  description:
+    "AI-native full-stack engineer in Hyderabad. Production RAG, agents, and workflow systems. Building Linea. Open to full-time roles. Proof at rohitt.codes/work.",
+  headline: <>AI / full-stack engineer who ships</>,
   featured: {
     display: true,
     title: (
       <Row gap="12" vertical="center">
-        <strong className="ml-4">★ {contra.rating} on Contra</strong>{" "}
-        <Line background="brand-alpha-strong" vert height="20" />
-        <Text marginRight="4" onBackground="brand-medium">
-          Open to contract work
+        <Text marginLeft="4" marginRight="4" onBackground="brand-medium">
+          Open to full-time roles
         </Text>
       </Row>
     ),
-    href: contra.url,
+    href: "/resume",
   },
-  subline: (
-    <>
-      I build full-stack and AI-native products, obsess over backend architecture, and ship systems that hold up past the demo.
-    </>
-  ),
+  subline: <>RAG, agents, and systems in production. Hyderabad. Building Linea. RAG at createxp.</>,
 };
 
 const about: About = {
   path: "/about",
   label: "About",
-  title: `About ${person.name} — AI-Native Full-Stack Engineer`,
-  description: `I'm ${person.name}, an AI-native full-stack engineer based in Hyderabad, India. I build AI-powered SaaS products and RAG pipelines, ship them, and figure out the rest along the way.`,
+  title: `About ${person.name} | AI / Full-Stack Engineer`,
+  description: `Rohith Singh is an AI-native full-stack engineer in Hyderabad, India. Production RAG, agents, and workflow systems. Open to full-time roles.`,
   tableOfContent: {
     display: true,
     subItems: false,
@@ -138,10 +104,9 @@ const about: About = {
     title: "Introduction",
     description: (
       <>
-        AI-native full-stack engineer based in Hyderabad, India. Interested in backend architecture,
-        AI infrastructure, and building SaaS products people actually use. I spend most of my time
-        building things, sometimes they ship, sometimes they teach me something better. Either way, I
-        share what I learn along the way.
+        AI-native full-stack engineer in Hyderabad. Backend architecture, AI infrastructure, and
+        products people use. Full Stack Developer at createxp (NovaBench RAG) and founder of Linea
+        Labs.
       </>
     ),
   },
@@ -152,34 +117,74 @@ const about: About = {
       {
         company: "createxp",
         timeframe: "Sep 2025 - Present",
-        role: "Software Engineer",
+        role: "Full Stack Developer",
         achievements: [
-          <Fragment key="createxp">
-            Back on the RAG recommendation engine, this time pushing retrieval quality: re-ranking,
-            hybrid sparse/dense search, and shaving latency wherever the profiler points.
+          <Fragment key="createxp-rag">
+            Built and deployed a production RAG pipeline combining LLM-based intent extraction,
+            vector retrieval, and contextual ranking, delivering streaming AI responses in under
+            200ms
+          </Fragment>,
+          <Fragment key="createxp-ranking">
+            Designed a multi-signal ranking service (vector similarity, specification matching,
+            contextual scoring) and shipped it as a Dockerized backend with authentication,
+            webhooks, and structured logging
+          </Fragment>,
+          <Fragment key="createxp-migration">
+            Redesigned the underlying PostgreSQL specification data model and built automated
+            migration tooling, safely migrating 10,000+ records with no manual cleanup
           </Fragment>,
         ],
-        images: [],
+        images: [
+          {
+            src: "/images/projects/novabench/cover-01.avif",
+            alt: "NovaBench RAG recommendation engine",
+            width: 16,
+            height: 9,
+          },
+        ],
       },
       {
         company: "Grit Labs",
         timeframe: "Jul 2025 - Sep 2025",
-        role: "Software Engineer",
+        role: "Software Development Engineer Intern",
         achievements: [
-          <Fragment key="grit">
-            A short stint between two createxp runs, full-stack feature work and internal tooling.
+          <Fragment key="grit-fam">
+            Built fam.cool, an internal testbed for prototyping AI personas, using prompt-based
+            conditioning and behavioral tuning to differentiate agent personalities, with real-time
+            messaging via Express.js, PostgreSQL, RabbitMQ, and WebSockets
+          </Fragment>,
+          <Fragment key="grit-jumble">
+            Built full-stack systems for jumble[cash], an AI-assisted on-chain arcade used by 1K+
+            users, implementing complex client state, multi-round game flows, and integration with
+            an AI decision engine
+          </Fragment>,
+          <Fragment key="grit-infra">
+            Owned deployment infrastructure across both products (Docker, Kubernetes, DigitalOcean),
+            enabling the two-person team to ship independently to production
           </Fragment>,
         ],
-        images: [],
+        images: [
+          {
+            src: "/images/projects/jumblecash/cover-01.webp",
+            alt: "jumble[cash] on-chain arcade",
+            width: 16,
+            height: 9,
+          },
+        ],
       },
       {
         company: "createxp",
         timeframe: "May 2025 - Jul 2025",
-        role: "Software Engineer",
+        role: "Full Stack Developer",
         achievements: [
-          <Fragment key="createxp-initial">
-            First stint at createxp: shipped the initial version of the laptop recommendation engine
-            that became NovaBench, RAG over a benchmark catalog instead of keyword search.
+          <Fragment key="createxp-trpc">
+            Migrated an application from a tightly-coupled tRPC architecture to a dedicated
+            Express.js backend and Next.js frontend, decoupling client and server concerns and
+            simplifying state management with React Query
+          </Fragment>,
+          <Fragment key="createxp-s3">
+            Built a hierarchical file-management system on Amazon S3, replacing ad hoc file handling
+            with structured nested directories, uploads, and public/private access controls
           </Fragment>,
         ],
         images: [],
@@ -191,12 +196,12 @@ const about: About = {
     title: "Studies",
     institutions: [
       {
-        name: "KMIT, Hyderabad",
-        description: <>Bachelor of Technology in Computer Science (2023 – 2026)</>,
+        name: "Keshav Memorial Institute of Technology",
+        description: "B.Tech, Computer Science. CGPA 8.4/10.0. Sep 2023 - Aug 2026",
       },
       {
-        name: "IOES, Hyderabad",
-        description: <>Diploma in Computer Science (2020 – 2023)</>,
+        name: "Government Institute of Electronics",
+        description: "Diploma CS, 9.67/10.0, Rank 2, Gold Medalist. Oct 2020 - May 2023",
       },
     ],
   },
@@ -219,7 +224,7 @@ const about: About = {
       {
         title: "AI & LLM Engineering",
         description: (
-          <>Integrating LLMs into products: RAG pipelines, agentic workflows, tool use, and building AI-native features that actually ship.</>
+          <>Integrating LLMs into products: RAG pipelines, agentic workflows, and tool use that holds up in production.</>
         ),
         tags: [
           { name: "OpenAI", icon: "openai" },
@@ -254,8 +259,8 @@ const blog: Blog = {
 const work: Work = {
   path: "/work",
   label: "Work",
-  title: `AI & SaaS Projects | ${person.name}`,
-  description: "AI-powered SaaS products, RAG pipelines, and full-stack systems I've actually shipped, not just prototyped.",
+  title: `Work | ${person.name}`,
+  description: "Production RAG, agents, and AI workflow systems. Linea, NovaBench, 3DLabs, Live Race, jumble[cash].",
   // Create new project pages by adding a new .mdx file to app/blog/posts
   // All projects will be listed on the /home and /work routes
 };
@@ -318,4 +323,67 @@ const uses = {
   description: "The tools, hardware, and software I use day to day.",
 };
 
-export { person, social, contra, newsletter, home, about, blog, work, gallery, uses };
+const resume = {
+  title: "Backend / Full-Stack Engineer: AI Infrastructure & Agentic Systems",
+  location: "Hyderabad, India",
+  summary:
+    "Backend and full-stack engineer who builds production AI systems, from RAG pipelines to workflow-orchestration engines, designed to hold up under real traffic and multi-tenant load. Works across backend architecture, agent infrastructure, and full-stack delivery with TypeScript, Python, NestJS, FastAPI, PostgreSQL/pgvector, and Docker.",
+  projects: [
+    {
+      name: "Linea: Open-Source AI Workflow Orchestration Platform",
+      stack: "TypeScript, NestJS, LangGraph.js, BullMQ, PostgreSQL/pgvector",
+      href: "https://getlinea.app",
+      hrefLabel: "getlinea.app",
+      bullets: [
+        "Architected and open-sourced a production-grade AI workflow orchestration platform built around LangGraph, BullMQ, NestJS, and PostgreSQL/pgvector, with a published TypeScript SDK",
+        "Supports composing agents, RAG, tool calls, and human approvals into durable, multi-tenant workflows, including subworkflows and checkpointed execution with retries and token accounting",
+        "Designed a provider-agnostic AI abstraction spanning Anthropic, OpenAI, Google, Groq, xAI, and Ollama, with workspace-level bring-your-own-key resolution",
+      ],
+    },
+    {
+      name: "3DLabs: Autonomous AI Video Pipeline",
+      stack: "Next.js, TypeScript, Gemini, Replicate, ElevenLabs, FFmpeg",
+      href: "https://3dlabs.it.com",
+      hrefLabel: "3dlabs.it.com",
+      bullets: [
+        "Architected and built an autonomous AI video-generation pipeline used by 5 teams / 40-50 users, orchestrating 12+ AI models across story generation, scene planning, image/video generation, TTS, sound design, and FFmpeg assembly to generate videos up to 15 minutes long",
+        "Designed a credit-reservation workflow and multi-tenant workspace isolation for projects, collaborators, and credit accounting",
+      ],
+    },
+  ],
+  skills: [
+    { title: "Languages", items: "TypeScript, JavaScript, Python, Rust, SQL" },
+    {
+      title: "Backend",
+      items: "Node.js, NestJS, Express.js, FastAPI, REST APIs, WebSockets, tRPC, Drizzle, Prisma",
+    },
+    {
+      title: "AI / Agents",
+      items:
+        "LangGraph, LangChain, RAG, agent orchestration, tool calling, MCP, embeddings, vector search, prompt engineering",
+    },
+    {
+      title: "Data & Messaging",
+      items:
+        "PostgreSQL, pgvector, Redis, MongoDB, hybrid retrieval, BullMQ, RabbitMQ, event-driven workflows",
+    },
+    { title: "Frontend", items: "React, Next.js, TanStack Query, Tailwind CSS" },
+    {
+      title: "Infrastructure",
+      items: "Docker, Kubernetes, AWS, Amazon S3, DigitalOcean, GitHub Actions, NGINX",
+    },
+  ],
+  openSource: [
+    "TS-Circuit: Contributor to React/TypeScript frontend tooling, PCB visualization, and geometry/rendering; shipped improvements to component polarity markings, hull rendering, cursor positioning, and editor validation",
+    "DocsGPT / CopilotKit: Contributed AI features to DocsGPT and built example agent applications using CopilotKit",
+    "50+ merged pull requests across open-source projects, plus $1K+ earned through OSS bounty programs",
+    "6x Hackathon Winner across AI, DeFi, and developer-tooling categories, with $5K+ in combined winnings",
+  ],
+  writing: [
+    "Production AI Agents with LangChain (6K+ views)",
+    "MCP Protocol Deep Dive (4K+ views)",
+    "Scaling Next.js Applications (3.2K+ views)",
+  ],
+};
+
+export { person, social, contra, newsletter, home, about, blog, work, gallery, uses, resume };

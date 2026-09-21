@@ -109,7 +109,14 @@ export const ContactForm: React.FC<React.ComponentProps<typeof Column>> = ({ ...
       <Column gap="4">
         <Heading as="h2" variant="display-strong-xs">Get in touch</Heading>
         <Text wrap="balance" variant="body-default-l" onBackground="neutral-weak">
-          Have a project in mind, or just want to say hi? Drop me a message.
+          Open to full-time AI engineer or AI-native full-stack roles. Prefer TypeScript/Node teams
+          building real LLM features.
+        </Text>
+        <Text wrap="balance" variant="body-default-m" onBackground="neutral-weak">
+          Email{" "}
+          <SmartLink href={`mailto:rohittcodes@gmail.com`}>rohittcodes@gmail.com</SmartLink> or
+          message on{" "}
+          <SmartLink href="https://www.linkedin.com/in/rohittcodes">LinkedIn</SmartLink>.
         </Text>
       </Column>
       {success ? (
@@ -157,8 +164,7 @@ export const ContactForm: React.FC<React.ComponentProps<typeof Column>> = ({ ...
               </Text>
             )}
             <Text variant="body-default-s" onBackground="neutral-weak" align="center">
-              Or <SmartLink href={contra.url}>hire me through Contra</SmartLink> if you prefer
-              escrow.
+              Also available for contract on <SmartLink href={contra.url}>Contra</SmartLink>.
             </Text>
           </Column>
         </form>

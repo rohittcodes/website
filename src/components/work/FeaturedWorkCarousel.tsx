@@ -81,10 +81,10 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
                   style={{
                     position: "absolute",
                     inset: "auto 0 0 0",
-                    height: "62%",
+                    height: "42%",
                     pointerEvents: "none",
                     background:
-                      "linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)",
+                      "linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.12) 70%, transparent 100%)",
                   }}
                 />
                 <Column
@@ -94,18 +94,28 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
                   fillWidth
                   gap="4"
                   padding="l"
+                  s={{ padding: "m" }}
                 >
                   <Heading
                     as="h3"
                     variant="heading-strong-l"
-                    style={{ color: "white" }}
+                    style={{
+                      color: "white",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     {post.title}
                   </Heading>
                   <Text
                     variant="body-default-s"
-                    wrap="balance"
-                    style={{ color: "rgba(255,255,255,0.88)" }}
+                    style={{
+                      color: "rgba(255,255,255,0.88)",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     {post.summary}
                   </Text>

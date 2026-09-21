@@ -2,20 +2,19 @@ import {
   Heading,
   Text,
   Button,
-  Avatar,
   RevealFx,
   Column,
   Badge,
   Row,
   Line,
+  SmartLink,
 } from "@once-ui-system/core";
-import { home, about, person, baseURL, routes } from "@/resources";
+import { home, about, person, social, contra, baseURL, routes } from "@/resources";
 import { ContactForm, GitHubRepos, Schema } from "@/components";
-import { HireChatButton } from "@/components/chat/HireChatButton";
 import { Projects } from "@/components/work/Projects";
 import { FeaturedWork } from "@/components/work/FeaturedWork";
+import { HeroStage } from "@/components/hero/HeroStage";
 import { Posts } from "@/components/blog/Posts";
-import { HotkeyBound } from "@/components/keyboard/HotkeyBound";
 import { generateSeoMetadata } from "@/utils/seo";
 import { assertRouteEnabled } from "@/utils/utils";
 import { getPinnedRepos } from "@/lib/github";
@@ -51,23 +50,28 @@ export default async function Home() {
             image: `${baseURL}${person.avatar}`,
           }}
         />
-        <Column fillWidth horizontal="center" gap="m">
+        <HeroStage>
+        <Column
+          fillWidth
+          horizontal="center"
+          vertical="center"
+          gap="m"
+          paddingY="16"
+        >
           <Column maxWidth="s" horizontal="center" align="center">
             {home.featured.display && (
               <Column fillWidth horizontal="center" paddingTop="12" paddingBottom="16">
-                <HotkeyBound href={home.featured.href}>
-                  <Badge
-                    background="brand-alpha-weak"
-                    paddingX="12"
-                    paddingY="4"
-                    onBackground="neutral-strong"
-                    textVariant="label-default-s"
-                    arrow={false}
-                    href={home.featured.href}
-                  >
-                    <Row paddingY="2">{home.featured.title}</Row>
-                  </Badge>
-                </HotkeyBound>
+                <Badge
+                  background="brand-alpha-weak"
+                  paddingX="12"
+                  paddingY="4"
+                  onBackground="neutral-strong"
+                  textVariant="label-default-s"
+                  arrow={false}
+                  href={home.featured.href}
+                >
+                  <Row paddingY="2">{home.featured.title}</Row>
+                </Badge>
               </Column>
             )}
             <Heading wrap="balance" variant="display-strong-m" paddingBottom="8">
@@ -76,39 +80,51 @@ export default async function Home() {
             <Text
               wrap="balance"
               onBackground="neutral-weak"
-              variant="heading-default-l"
+              variant="body-default-l"
               paddingBottom="16"
             >
               {home.subline}
             </Text>
             <Row gap="12" vertical="center" wrap horizontal="center" paddingTop="12">
-              <HotkeyBound href={about.path}>
-                <Button
-                  id="about"
-                  data-border="rounded"
-                  href={about.path}
-                  variant="secondary"
-                  size="m"
-                  weight="default"
-                  arrowIcon
-                >
-                  <Row gap="8" vertical="center" paddingRight="4">
-                    {about.avatar.display && (
-                      <Avatar
-                        marginRight="8"
-                        style={{ marginLeft: "-0.75rem" }}
-                        src={person.avatar}
-                        size="m"
-                      />
-                    )}
-                    {about.title}
-                  </Row>
-                </Button>
-              </HotkeyBound>
-              <HireChatButton />
+              <Button
+                id="contact"
+                data-border="rounded"
+                href={`mailto:${person.email}`}
+                variant="primary"
+                size="m"
+                prefixIcon="email"
+              >
+                Get in touch
+              </Button>
+              <Button
+                id="work"
+                data-border="rounded"
+                href="/work"
+                variant="primary"
+                size="m"
+                arrowIcon
+              >
+                View work
+              </Button>
+            </Row>
+            <Row gap="16" vertical="center" wrap horizontal="center" paddingTop="12">
+              <SmartLink href="/resume">
+                <Text variant="label-default-s">Resume</Text>
+              </SmartLink>
+              {social
+                .filter((item) => ["LinkedIn", "GitHub"].includes(item.name))
+                .map((item) => (
+                  <SmartLink key={item.name} href={item.link}>
+                    <Text variant="label-default-s">{item.name}</Text>
+                  </SmartLink>
+                ))}
+              <SmartLink href={contra.url}>
+                <Text variant="label-default-s">Contra (contract)</Text>
+              </SmartLink>
             </Row>
           </Column>
         </Column>
+        </HeroStage>
         <Column fillWidth gap="16" paddingX="l">
           <Row fillWidth vertical="center" gap="16">
             <Heading as="h2" variant="display-strong-xs">
@@ -119,23 +135,14 @@ export default async function Home() {
           <FeaturedWork limit={3} />
         </Column>
         {routes["/blog"] && (
-          <Column fillWidth gap="16" marginBottom="m">
-            <Row fillWidth paddingRight="40">
-              <Line maxWidth={48} />
+          <Column fillWidth gap="16" paddingX="l" marginBottom="m">
+            <Row fillWidth vertical="center" gap="16">
+              <Heading as="h2" variant="display-strong-xs" wrap="balance">
+                Latest from the blog
+              </Heading>
+              <Line flex={1} />
             </Row>
-            <Row fillWidth gap="16" marginTop="16" s={{ direction: "column" }}>
-              <Row flex={1} paddingLeft="l" paddingTop="8">
-                <Heading as="h2" variant="display-strong-xs" wrap="balance">
-                  Latest from the blog
-                </Heading>
-              </Row>
-              <Row flex={3} paddingX="20">
-                <Posts range={[1, 2]} columns="2" />
-              </Row>
-            </Row>
-            <Row fillWidth paddingLeft="40" horizontal="end">
-              <Line maxWidth={48} />
-            </Row>
+            <Posts range={[1, 2]} columns="2" />
           </Column>
         )}
         <Column fillWidth gap="16" paddingX="l">

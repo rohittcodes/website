@@ -15,7 +15,6 @@ import {
 import { Footer, Header, Providers, Schema } from "@/components";
 import { DeferredWidgets } from "@/components/DeferredWidgets";
 import { Analytics } from "@vercel/analytics/next";
-import { getPaletteItems } from "@/lib/palette.server";
 import { baseURL, effects, fonts, style, dataStyle, home, person, social } from "@/resources";
 import { generateSeoMetadata } from "@/utils/seo";
 import styles from "./layout.module.scss";
@@ -35,8 +34,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const paletteItems = getPaletteItems();
-
   return (
     <Flex
       suppressHydrationWarning
@@ -195,7 +192,7 @@ export default async function RootLayout({
             </Flex>
           </Flex>
           <Footer />
-          <DeferredWidgets paletteItems={paletteItems} />
+          <DeferredWidgets />
           <Analytics />
         </Column>
       </Providers>

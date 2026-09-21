@@ -6,6 +6,7 @@ const ROUTE_PRIORITY: Record<string, number> = {
   "/blog": 0.9,
   "/work": 0.9,
   "/about": 0.8,
+  "/resume": 0.8,
   "/uses": 0.6,
   "/now": 0.6,
   "/gallery": 0.6,

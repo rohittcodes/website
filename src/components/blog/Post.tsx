@@ -64,7 +64,6 @@ export default function Post({ post, thumbnail, direction, priority = false }: P
             )}
             <Text
               variant="heading-strong-m"
-              wrap="balance"
               style={{
                 display: "-webkit-box",
                 WebkitLineClamp: 2,

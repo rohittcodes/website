@@ -1,10 +1,8 @@
 @use "../components/breakpoints.scss" as breakpoints;
 
-// The nav pill is fixed to the top on desktop, so content needs clearance
-// under it. On mobile it relocates to the bottom (see Header.module.scss),
-// so that same top clearance is just dead space above the content.
+// Keep content clear of the fixed top nav on small screens.
 @media (max-width: breakpoints.$s) {
     .content {
-        padding-top: var(--static-space-24);
+        padding-top: 88px !important;
     }
 }

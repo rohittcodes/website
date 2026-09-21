@@ -10,6 +10,7 @@ export {
   work,
   gallery,
   uses,
+  resume,
 } from "./content";
 
 export {

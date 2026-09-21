@@ -75,13 +75,22 @@ export default function About() {
           "@context": "https://schema.org",
           "@type": "Person",
           name: person.name,
-          url: `${baseURL}${about.path}`,
+          url: baseURL,
+          email: person.email,
           image: `${baseURL}${person.avatar}`,
           jobTitle: person.role,
           description: about.description,
-          sameAs: social
-            .filter((item) => item.essential && item.link && !item.link.startsWith("mailto:"))
-            .map((item) => item.link),
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Hyderabad",
+            addressCountry: "IN",
+          },
+          sameAs: [
+            "https://github.com/rohittcodes",
+            "https://www.linkedin.com/in/rohittcodes",
+            "https://x.com/rohittcodes",
+            "https://contra.com/rohittcodes",
+          ],
           worksFor: about.work.experiences[0]
             ? { "@type": "Organization", name: about.work.experiences[0].company }
             : undefined,
@@ -175,7 +184,7 @@ export default function About() {
                   </HotkeyBound>
                 </Row>
               )}
-              <HotkeyBound href="/data/rohitt.pdf">
+              <HotkeyBound href="/resume">
                 <Row
                   fitWidth
                   border="brand-alpha-medium"
@@ -191,10 +200,10 @@ export default function About() {
                   <Icon paddingLeft="12" name="document" onBackground="brand-weak" />
                   <Row paddingX="8">Resume</Row>
                   <IconButton
-                    href="/data/rohitt.pdf"
+                    href="/resume"
                     data-border="rounded"
                     variant="secondary"
-                    icon="arrowUpRight"
+                    icon="chevronRight"
                   />
                 </Row>
               </HotkeyBound>
@@ -290,7 +299,7 @@ export default function About() {
                       )}
                     </Column>
                     {experience.images && experience.images.length > 0 && (
-                      <Row fillWidth paddingTop="m" paddingLeft="40" gap="12" wrap>
+                      <Row fillWidth paddingLeft="40" gap="12" wrap>
                         {experience.images.map((image, index) => (
                           <Row
                             key={index}

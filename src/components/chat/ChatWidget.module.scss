@@ -21,7 +21,7 @@
   @include breakpoints.s {
     right: var(--static-space-16);
     left: var(--static-space-16);
-    bottom: calc(var(--static-space-80) + var(--static-space-24));
+    bottom: var(--static-space-24);
     align-items: stretch;
   }
 }
@@ -64,22 +64,32 @@
   }
 }
 
+.mobileFab {
+  display: none;
+
+  @include breakpoints.s {
+    display: block;
+    position: fixed;
+    z-index: 10;
+    right: var(--static-space-24);
+    bottom: var(--static-space-24);
+    width: var(--static-space-56);
+    height: var(--static-space-56);
+  }
+}
+
 .mobileTrigger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: stretch;
+  width: 100%;
   height: 100%;
-  aspect-ratio: 1;
-  width: auto;
-  min-width: var(--static-space-48);
   padding: 0;
   border: 1px solid var(--neutral-alpha-weak);
   border-radius: var(--radius-full);
   background: var(--page-background);
   box-shadow: var(--shadow-l);
   cursor: pointer;
-  flex-shrink: 0;
   box-sizing: border-box;
 
   &:focus-visible {
@@ -88,9 +98,10 @@
   }
 }
 
-.mobileTriggerActive {
-  border-color: var(--brand-alpha-medium);
-  background: var(--brand-alpha-weak);
+.mobileFab > span {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .triggerCopy {

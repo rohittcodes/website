@@ -1,6 +1,6 @@
 import "server-only";
 
-import { contra, routes } from "@/resources";
+import { routes } from "@/resources";
 import { getPosts } from "@/utils/utils";
 import type { PaletteItem } from "./palette";
 
@@ -10,6 +10,7 @@ const PAGE_ITEMS: Array<{ path: string; title: string; subtitle: string }> = [
   { path: "/work", title: "Work", subtitle: "Selected projects" },
   { path: "/blog", title: "Blog", subtitle: "Writing and notes" },
   { path: "/uses", title: "Uses", subtitle: "Stack, tools, and setup" },
+  { path: "/resume", title: "Resume", subtitle: "Experience and download" },
   { path: "/now", title: "Now", subtitle: "What I'm focused on" },
   { path: "/gallery", title: "Gallery", subtitle: "Photos" },
 ];
@@ -25,17 +26,17 @@ export function getPaletteItems(): PaletteItem[] {
     },
     {
       id: "action-hire",
-      title: "Work together",
-      subtitle: "Hire on Contra",
+      title: "Get in touch",
+      subtitle: "Email Rohith",
       group: "Actions",
-      href: contra.url,
+      href: "mailto:rohittcodes@gmail.com",
     },
     {
       id: "action-resume",
-      title: "Download resume",
-      subtitle: "PDF resume",
+      title: "Resume",
+      subtitle: "Experience and PDF",
       group: "Actions",
-      href: "/data/rohitt.pdf",
+      href: "/resume",
     },
   ];
 

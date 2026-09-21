@@ -104,6 +104,22 @@ export default async function Project({
           {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
         </Text>
         <Heading variant="display-strong-s">{post.metadata.title}</Heading>
+        {post.metadata.summary && (
+          <Text
+            variant="body-default-l"
+            onBackground="neutral-weak"
+            align="center"
+            wrap="balance"
+            marginTop="8"
+          >
+            {post.metadata.summary}
+          </Text>
+        )}
+        {post.metadata.subtitle && (
+          <Text variant="label-default-m" onBackground="brand-weak" marginTop="8">
+            {post.metadata.subtitle}
+          </Text>
+        )}
       </Column>
       <Row marginBottom="8" horizontal="center">
         <Row gap="16" vertical="center">

@@ -1,0 +1,252 @@
+@use "../breakpoints.scss" as breakpoints;
+
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: min(68vh, 620px);
+  overflow: visible;
+}
+
+.cluster {
+  position: relative;
+  width: 100%;
+}
+
+.center {
+  position: relative;
+  z-index: 1;
+}
+
+.stage {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+}
+
+.item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  animation: drift 11s ease-in-out infinite;
+}
+
+.itemA {
+  top: 0;
+  left: -132px;
+  animation-duration: 12s;
+}
+
+.itemB {
+  top: 12px;
+  right: -132px;
+  align-items: flex-end;
+  animation-duration: 13s;
+  animation-delay: -3s;
+}
+
+.itemC {
+  bottom: 0;
+  left: -112px;
+  animation-duration: 10s;
+  animation-delay: -5s;
+}
+
+.itemD {
+  bottom: 4px;
+  right: -120px;
+  align-items: flex-end;
+  animation-duration: 14s;
+  animation-delay: -2s;
+}
+
+.cursor {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pointer {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.cursorLabel {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.brand {
+  color: var(--brand-on-background-strong);
+
+  .cursorLabel {
+    background: var(--brand-on-background-strong);
+    color: var(--page-background);
+  }
+}
+
+.accent {
+  color: var(--accent-on-background-strong);
+
+  .cursorLabel {
+    background: var(--accent-on-background-strong);
+    color: var(--page-background);
+  }
+}
+
+.card,
+.chip {
+  border: 1px solid var(--neutral-alpha-medium);
+  background: color-mix(in srgb, var(--page-background) 78%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 148px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.cardKicker {
+  font-family: var(--font-code);
+  font-size: 11px;
+  color: var(--brand-on-background-strong);
+}
+
+.cardBody {
+  font-size: 13px;
+  color: var(--neutral-on-background-strong);
+}
+
+.chip {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-family: var(--font-code);
+  font-size: 11px;
+  color: var(--neutral-on-background-medium);
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(6px, -10px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    animation: none;
+  }
+}
+
+@media (max-width: breakpoints.$m) {
+  .wrap {
+    justify-content: flex-start;
+    min-height: auto;
+  }
+
+  .cluster {
+    padding: 72px 0 120px;
+  }
+
+  .itemA {
+    top: 0;
+    left: 8px;
+  }
+
+  .itemB {
+    top: 8px;
+    right: 8px;
+  }
+
+  .itemC {
+    bottom: 0;
+    left: 8px;
+  }
+
+  .itemD {
+    bottom: 8px;
+    right: 8px;
+  }
+
+  .card {
+    min-width: 0;
+    padding: 7px 9px;
+  }
+
+  .cardBody {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: breakpoints.$s) {
+  .wrap {
+    justify-content: flex-start;
+    min-height: auto;
+  }
+
+  .cluster {
+    padding: 52px 0 120px;
+  }
+
+  .card {
+    display: none;
+  }
+
+  .pointer {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cursorLabel {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
+  .chip {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .item {
+    gap: 6px;
+  }
+
+  .itemA {
+    top: 4px;
+    left: 4px;
+  }
+
+  .itemB {
+    top: 8px;
+    right: 4px;
+  }
+
+  .itemC {
+    bottom: 4px;
+    left: 4px;
+  }
+
+  .itemD {
+    bottom: 8px;
+    right: 4px;
+  }
+}

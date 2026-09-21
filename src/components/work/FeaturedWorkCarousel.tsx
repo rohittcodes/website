@@ -94,7 +94,7 @@ export function FeaturedWorkCarousel({ projects }: { projects: SlideData[] }) {
                   fillWidth
                   gap="4"
                   padding="l"
-                  s={{ padding: "m" }}
+                  s={{ style: { padding: "var(--static-space-16)" } }}
                 >
                   <Heading
                     as="h3"

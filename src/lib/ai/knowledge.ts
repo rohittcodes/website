@@ -160,7 +160,7 @@ export function getNowKnowledge() {
           "Iterating on retrieval quality and latency, adding re-ranking and experimenting with hybrid sparse/dense search.",
       },
       {
-        title: "Linea",
+        title: "Linea Labs",
         description:
           "Adding a workflow marketplace so teams can share and fork agent pipelines. Building the execution sandbox.",
       },
@@ -181,8 +181,11 @@ export function getNowKnowledge() {
 }
 
 export function getContactKnowledge() {
+  const linkedin = social.find((item) => item.name === "LinkedIn" && item.link);
+
   return {
     email: person.email,
+    linkedin: linkedin?.link ?? null,
     calendar: about.calendar.display ? about.calendar.link : null,
     social: social
       .filter((item) => item.essential && item.link)

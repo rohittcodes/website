@@ -1,7 +1,7 @@
 "use client";
 
-import { Background, Button, Column, Heading, Input, SmartLink, Text, Textarea, opacity, SpacingToken } from "@once-ui-system/core";
-import { contra, mailchimp } from "@/resources";
+import { Background, Button, Column, Heading, Input, Row, SmartLink, Text, Textarea, opacity, SpacingToken } from "@once-ui-system/core";
+import { contra, mailchimp, person, social } from "@/resources";
 import { useState } from "react";
 
 export const ContactForm: React.FC<React.ComponentProps<typeof Column>> = ({ ...flex }) => {
@@ -112,12 +112,16 @@ export const ContactForm: React.FC<React.ComponentProps<typeof Column>> = ({ ...
           Open to full-time AI engineer or AI-native full-stack roles. Prefer TypeScript/Node teams
           building real LLM features.
         </Text>
-        <Text wrap="balance" variant="body-default-m" onBackground="neutral-weak">
-          Email{" "}
-          <SmartLink href={`mailto:rohittcodes@gmail.com`}>rohittcodes@gmail.com</SmartLink> or
-          message on{" "}
-          <SmartLink href="https://www.linkedin.com/in/rohittcodes">LinkedIn</SmartLink>.
-        </Text>
+        <Row gap="16" wrap vertical="center">
+          <SmartLink href={`mailto:${person.email}`}>{person.email}</SmartLink>
+          {social
+            .filter((item) => item.name === "LinkedIn" && item.link)
+            .map((item) => (
+              <SmartLink key={item.name} href={item.link}>
+                LinkedIn
+              </SmartLink>
+            ))}
+        </Row>
       </Column>
       {success ? (
         <Text variant="body-default-m" onBackground="brand-weak">

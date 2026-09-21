@@ -37,7 +37,7 @@ export default function Resume() {
             </Text>
           </Column>
           <Row gap="8" className={styles.printButton} wrap>
-            <Button href="/data/rohitt.pdf" variant="secondary" size="s" prefixIcon="document" download>
+            <Button href="/data/rohitt.pdf" variant="primary" size="s" prefixIcon="document" download>
               Download PDF
             </Button>
             <Button href={`mailto:${person.email}`} variant="secondary" size="s" prefixIcon="email">

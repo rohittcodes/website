@@ -27,7 +27,7 @@ const now = {
         "Iterating on retrieval quality and latency, adding re-ranking and experimenting with hybrid sparse/dense search.",
     },
     {
-      title: "Linea",
+      title: "Linea Labs",
       description:
         "Adding a workflow marketplace so teams can share and fork agent pipelines. Building the execution sandbox.",
     },

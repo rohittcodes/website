@@ -67,7 +67,7 @@ const home: Home = {
   label: "Home",
   title: "Rohith Singh | AI / Full-Stack Engineer | Open to full-time",
   description:
-    "AI-native full-stack engineer in Hyderabad. Production RAG, agents, and workflow systems. Building Linea. Open to full-time roles. Proof at rohitt.codes/work.",
+    "AI-native full-stack engineer in Hyderabad. Production RAG, agents, and workflow systems. Building Linea Labs. Open to full-time roles. Proof at rohitt.codes/work.",
   headline: <>AI / full-stack engineer who ships</>,
   featured: {
     display: true,
@@ -80,7 +80,7 @@ const home: Home = {
     ),
     href: "/resume",
   },
-  subline: <>RAG, agents, and systems in production. Hyderabad. Building Linea. RAG at createxp.</>,
+  subline: <>RAG, agents, and systems in production. Hyderabad. Building Linea Labs. RAG at createxp.</>,
 };
 
 const about: About = {
@@ -260,7 +260,7 @@ const work: Work = {
   path: "/work",
   label: "Work",
   title: `Work | ${person.name}`,
-  description: "Production RAG, agents, and AI workflow systems. Linea, NovaBench, 3DLabs, Live Race, jumble[cash].",
+  description: "Production RAG, agents, and AI workflow systems. Linea Labs, NovaBench, 3DLabs, Live Race, jumble[cash].",
   // Create new project pages by adding a new .mdx file to app/blog/posts
   // All projects will be listed on the /home and /work routes
 };
@@ -324,10 +324,10 @@ const uses = {
 };
 
 const resume = {
-  title: "Backend / Full-Stack Engineer: AI Infrastructure & Agentic Systems",
+  title: "AI / Full-Stack Engineer: AI Infrastructure & Agentic Systems",
   location: "Hyderabad, India",
   summary:
-    "Backend and full-stack engineer who builds production AI systems, from RAG pipelines to workflow-orchestration engines, designed to hold up under real traffic and multi-tenant load. Works across backend architecture, agent infrastructure, and full-stack delivery with TypeScript, Python, NestJS, FastAPI, PostgreSQL/pgvector, and Docker.",
+    "AI / full-stack engineer who builds production AI systems, from RAG pipelines to workflow-orchestration engines, designed to hold up under real traffic and multi-tenant load. Works across backend architecture, agent infrastructure, and full-stack delivery with TypeScript, Python, NestJS, FastAPI, PostgreSQL/pgvector, and Docker.",
   projects: [
     {
       name: "Linea: Open-Source AI Workflow Orchestration Platform",
